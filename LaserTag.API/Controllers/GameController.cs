@@ -12,7 +12,7 @@ namespace LaserTag.API.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "dung dep trai vcl", "asdasdasd" };
         }
 
         // GET api/<GameController>/5
