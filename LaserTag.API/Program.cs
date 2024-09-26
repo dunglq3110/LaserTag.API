@@ -1,4 +1,7 @@
 using LaserTag_API.Core.Data;
+using LaserTag_API.Core.Interfaces;
+using LaserTag_API.Core.Interfaces.IRepositories;
+using LaserTag_API.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
@@ -43,10 +46,14 @@ builder.Services.AddSwaggerGen(c =>
                     }
                 });
 });
+
+
 builder.Services.AddDbContext<AppDbContext>(config =>
 {
     config.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

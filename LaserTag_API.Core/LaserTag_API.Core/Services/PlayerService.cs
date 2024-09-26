@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LaserTag_API.Core.Services
 {
-    internal class PlayerService
+    public class PlayerService
     {
+
     }
 }

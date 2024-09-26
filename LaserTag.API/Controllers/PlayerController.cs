@@ -1,4 +1,5 @@
 ﻿using LaserTag_API.Core.Data;
+using LaserTag_API.Core.Interfaces;
 using LaserTag_API.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,21 +11,24 @@ namespace LaserTag.API.Controllers
     public class PlayerController: ControllerBase
     {
         private readonly AppDbContext _context;
-        public PlayerController(AppDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public PlayerController(AppDbContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
+
         }
         [HttpGet]
         public async Task<ActionResult<List<player>>> GetAllPlayer()
         {
-            var playerList = await _context.Players.ToListAsync();
+            var playerList = await _unitOfWork.PlayerRepository.GetAllPlayersAsync();
             return Ok(playerList);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<player>> GetPlayer(int id)
         {
-            var player = await _context.Players.FindAsync(id);
+            var player = await _unitOfWork.PlayerRepository.GetPlayersAsync(id);
             if(player == null)
             {
                 return BadRequest("Player not found");
@@ -34,43 +38,24 @@ namespace LaserTag.API.Controllers
         [HttpPost]
         public async Task<ActionResult<List<player>>> AddPlayer(player player)
         {
-            // The 'id' should not be set manually
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
+            var addplayer = await _unitOfWork.PlayerRepository.AddPlayer(player);
 
-            return Ok(await _context.Players.ToListAsync());
+            return Ok(addplayer);
         }
         [HttpPut]
         public async Task<ActionResult<List<player>>> UpdatePlayer(player updatePlayer)
         {
-            var dbplayer = await _context.Players.FindAsync(updatePlayer.id);
+            var dbplayer = await _unitOfWork.PlayerRepository.UpdatePlayer(updatePlayer);
 
-            if (dbplayer == null)
-                return NotFound("The player not found");
-
-            dbplayer.name = updatePlayer.name;
-            dbplayer.mac_gun = updatePlayer.mac_gun;
-            dbplayer.mac_vest = updatePlayer.mac_vest;
-            dbplayer.current_health = updatePlayer.current_health;
-            dbplayer.current_bullet = updatePlayer.current_bullet;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Players.ToListAsync());
+            return Ok(dbplayer);
         }
 
         [HttpDelete]
         public async Task<ActionResult<List<player>>> DeletePlayer(int id)
         {
-            var player = await _context.Players.FindAsync(id);
+            var player = await _unitOfWork.PlayerRepository.DeletePlayer(id);
 
-            if (player == null)
-                return NotFound("The player not found");
-
-            _context.Players.Remove(player);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Players.ToListAsync());
+            return Ok(player);
         }
     }
 }
