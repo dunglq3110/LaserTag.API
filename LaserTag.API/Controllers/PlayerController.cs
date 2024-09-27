@@ -1,6 +1,8 @@
 ﻿using LaserTag_API.Core.Data;
 using LaserTag_API.Core.Interfaces;
+using LaserTag_API.Core.Interfaces.IServices;
 using LaserTag_API.Core.Models;
+using LaserTag_API.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,25 +12,22 @@ namespace LaserTag.API.Controllers
     [ApiController]
     public class PlayerController: ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly IUnitOfWork _unitOfWork;
-        public PlayerController(AppDbContext context, IUnitOfWork unitOfWork)
+        private readonly IPlayerService _playerService;
+        public PlayerController(IPlayerService playerService)
         {
-            _context = context;
-            _unitOfWork = unitOfWork;
-
+            _playerService = playerService;
         }
         [HttpGet]
         public async Task<ActionResult<List<player>>> GetAllPlayer()
         {
-            var playerList = await _unitOfWork.PlayerRepository.GetAllPlayersAsync();
+            var playerList = await _playerService.GetAllPlayersAsync();
             return Ok(playerList);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<player>> GetPlayer(int id)
         {
-            var player = await _unitOfWork.PlayerRepository.GetPlayersAsync(id);
+            var player = await _playerService.GetPlayersAsync(id);
             if(player == null)
             {
                 return BadRequest("Player not found");
@@ -38,14 +37,14 @@ namespace LaserTag.API.Controllers
         [HttpPost]
         public async Task<ActionResult<List<player>>> AddPlayer(player player)
         {
-            var addplayer = await _unitOfWork.PlayerRepository.AddPlayer(player);
+            var addplayer = await _playerService.AddPlayerAsync(player);
 
             return Ok(addplayer);
         }
         [HttpPut]
         public async Task<ActionResult<List<player>>> UpdatePlayer(player updatePlayer)
         {
-            var dbplayer = await _unitOfWork.PlayerRepository.UpdatePlayer(updatePlayer);
+            var dbplayer = await _playerService.UpdatePlayerAsync(updatePlayer);
 
             return Ok(dbplayer);
         }
@@ -53,7 +52,7 @@ namespace LaserTag.API.Controllers
         [HttpDelete]
         public async Task<ActionResult<List<player>>> DeletePlayer(int id)
         {
-            var player = await _unitOfWork.PlayerRepository.DeletePlayer(id);
+            var player = await _playerService.DeletePlayerAsync(id);
 
             return Ok(player);
         }

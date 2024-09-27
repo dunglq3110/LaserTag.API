@@ -12,10 +12,10 @@ namespace LaserTag_API.Core.Interfaces.IRepositories
     public interface IRepository<T> where T : class
     {
         Task<T> UpdateAsync(T entity);
-        Task<T> DeleteAsync(string id);
+        Task<T> DeleteAsync(int id);
         Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
         Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
-        Task<T> GetByIdAsync(string id);
+        Task<T> GetByIdAsync(int id);
         Task<T> AddAsync(T entity);
         Task<int> SaveChangesAsync();
     }

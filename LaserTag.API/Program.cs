@@ -1,7 +1,9 @@
 using LaserTag_API.Core.Data;
 using LaserTag_API.Core.Interfaces;
 using LaserTag_API.Core.Interfaces.IRepositories;
+using LaserTag_API.Core.Interfaces.IServices;
 using LaserTag_API.Core.Repositories;
+using LaserTag_API.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
@@ -54,6 +56,7 @@ builder.Services.AddDbContext<AppDbContext>(config =>
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
