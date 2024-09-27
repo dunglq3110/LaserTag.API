@@ -54,9 +54,11 @@ builder.Services.AddDbContext<AppDbContext>(config =>
 {
     config.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+// DI Containers
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
