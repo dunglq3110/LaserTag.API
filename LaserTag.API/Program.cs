@@ -58,6 +58,9 @@ builder.Services.AddDbContext<AppDbContext>(config =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IAttributeService, AttributeService>();
+builder.Services.AddScoped<IConfigService, ConfigService>();
+
 
 var app = builder.Build();
 

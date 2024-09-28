@@ -10,6 +10,11 @@ namespace LaserTag_API.Core.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IPlayerRepository PlayerRepository { get; }
+        IAttributeRepository AttributeRepository { get; }
+        IConfigRepository ConfigRepository { get; }
+
+
+
 
         void SaveChangesLasertag();
         Task SaveChangesAsyncLasertag();

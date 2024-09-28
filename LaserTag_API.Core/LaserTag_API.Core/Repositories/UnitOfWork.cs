@@ -15,6 +15,8 @@ namespace LaserTag_API.Core.Repositories
     {
         private readonly AppDbContext _appDbContext;
         private readonly IPlayerRepository _playerRepository;
+        private readonly IAttributeRepository _attributeRepository;
+        private readonly IConfigRepository _configRepository;
 
         public UnitOfWork(AppDbContext appDbContext)
         {
@@ -22,6 +24,8 @@ namespace LaserTag_API.Core.Repositories
         }
 
         public IPlayerRepository PlayerRepository => _playerRepository  ?? new PlayerRepository(_appDbContext);
+        public IAttributeRepository AttributeRepository => _attributeRepository ?? new AttributeRepository(_appDbContext);
+        public IConfigRepository ConfigRepository => _configRepository ?? new ConfigRepository(_appDbContext);
 
         public void SaveChangesLasertag()
         {
