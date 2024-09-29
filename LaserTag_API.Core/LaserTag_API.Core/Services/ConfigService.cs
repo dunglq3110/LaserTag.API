@@ -21,7 +21,7 @@ namespace LaserTag_API.Core.Services
         {
             return await _unitOfWork.ConfigRepository.GetAllAsync();
         }
-        public async Task<config> GetConfigsAsync(int id)
+        public async Task<config> GetConfigsAsync(string id)
         {
             return await _unitOfWork.ConfigRepository.GetByIdAsync(id);
         }
@@ -39,7 +39,7 @@ namespace LaserTag_API.Core.Services
             {
                 findconfig.name = updateconfig.name;
                 findconfig.code_name = updateconfig.code_name;
-                findconfig.config_type_id = updateconfig.config_type_id;
+                findconfig.config_type = updateconfig.config_type;
                 findconfig.value1 = updateconfig.value1;
                 findconfig.value2 = updateconfig.value2;
                 findconfig.value3 = updateconfig.value3;
@@ -56,7 +56,7 @@ namespace LaserTag_API.Core.Services
 
             return await _unitOfWork.ConfigRepository.GetAllAsync();
         }
-        public async Task<IEnumerable<config>> DeleteConfigAsync(int deleteconfig)
+        public async Task<IEnumerable<config>> DeleteConfigAsync(string deleteconfig)
         {
             var findconfig = await _unitOfWork.ConfigRepository.GetByIdAsync(deleteconfig);
 

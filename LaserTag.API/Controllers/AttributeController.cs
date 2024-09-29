@@ -21,7 +21,7 @@ namespace LaserTag.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<attribute>> GetAttribute(int id)
+        public async Task<ActionResult<attribute>> GetAttribute(string id)
         {
             var attribute = await _attributeService.GetAttributesAsync(id);
             if (attribute == null)
@@ -46,7 +46,7 @@ namespace LaserTag.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<List<attribute>>> DeleteAttribute(int id)
+        public async Task<ActionResult<List<attribute>>> DeleteAttribute(string id)
         {
             var attribute = await _attributeService.DeleteAttributeAsync(id);
 

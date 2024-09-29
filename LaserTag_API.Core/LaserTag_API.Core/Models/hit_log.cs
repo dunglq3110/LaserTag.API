@@ -12,12 +12,11 @@ namespace LaserTag_API.Core.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int hit_log_id {  get; set; }
-        public int source_player_id { get; set; }
-        public int target_player_id { get; set; } 
-        public int round_id { get; set; }
+        public string hit_log_id {  get; set; }
+        public player? source_player { get; set; }
+        public player? target_player { get; set; } 
         public round round { get; set; }
-        public string hit_type_id { get; set; }
+        public shared_base? hit_type { get; set; }
         public int value { get; set; }
     }
 }

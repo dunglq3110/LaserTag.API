@@ -12,10 +12,9 @@ namespace LaserTag_API.Core.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int round_id { get; set; }
+        public string round_id { get; set; }
         public DateTime date { get; set; }
-        public string round_stage_id { get; set; }
-        public int match_id { get; set; }
+        public shared_base? round_stage { get; set; }
         public match match { get; set; }
     }
 }

@@ -11,9 +11,9 @@ namespace LaserTag_API.Core.Interfaces.IServices
     public interface IAttributeService
     {
         Task<IEnumerable<attribute>> GetAllAttributesAsync();
-        Task<attribute> GetAttributesAsync(int id);
+        Task<attribute> GetAttributesAsync(string id);
         Task<IEnumerable<attribute>> AddAttributeAsync(attribute attribute);
         Task<IEnumerable<attribute>> UpdateAttributeAsync(attribute updateattribute);
-        Task<IEnumerable<attribute>> DeleteAttributeAsync(int deleteattribute);
+        Task<IEnumerable<attribute>> DeleteAttributeAsync(string deleteattribute);
     }
 }

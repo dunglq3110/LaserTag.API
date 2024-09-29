@@ -51,7 +51,7 @@ namespace LaserTag_API.Core.Repositories
 
             return await _context.Attributes.ToListAsync();
         }
-        public async Task<IEnumerable<attribute>> DeleteAttribute(int deleteattribute)
+        public async Task<IEnumerable<attribute>> DeleteAttribute(string deleteattribute)
         {
             var findattribute = await _context.Attributes.FindAsync(deleteattribute);
 

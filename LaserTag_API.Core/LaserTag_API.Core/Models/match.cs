@@ -12,8 +12,8 @@ namespace LaserTag_API.Core.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        public string id { get; set; }
         public DateTime date { get; set; }
-        public string stage_id { get; set; }
+        public shared_base? stage { get; set; }
     }
 }

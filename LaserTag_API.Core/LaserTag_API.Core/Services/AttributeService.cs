@@ -20,7 +20,7 @@ namespace LaserTag_API.Core.Services
         {
             return await _unitOfWork.AttributeRepository.GetAllAsync();
         }
-        public async Task<attribute> GetAttributesAsync(int id)
+        public async Task<attribute> GetAttributesAsync(string id)
         {
             return await _unitOfWork.AttributeRepository.GetByIdAsync(id);
         }
@@ -50,7 +50,7 @@ namespace LaserTag_API.Core.Services
 
             return await _unitOfWork.AttributeRepository.GetAllAsync();
         }
-        public async Task<IEnumerable<attribute>> DeleteAttributeAsync(int deleteattribute)
+        public async Task<IEnumerable<attribute>> DeleteAttributeAsync(string deleteattribute)
         {
             var findattribute = await _unitOfWork.AttributeRepository.GetByIdAsync(deleteattribute);
 

@@ -10,9 +10,9 @@ namespace LaserTag_API.Core.Interfaces.IServices
     public interface IConfigService
     {
         Task<IEnumerable<config>> GetAllConfigsAsync();
-        Task<config> GetConfigsAsync(int id);
+        Task<config> GetConfigsAsync(string id);
         Task<IEnumerable<config>> AddConfigAsync(config config);
         Task<IEnumerable<config>> UpdateConfigAsync(config updateconfig);
-        Task<IEnumerable<config>> DeleteConfigAsync(int deleteconfig);
+        Task<IEnumerable<config>> DeleteConfigAsync(string deleteconfig);
     }
 }

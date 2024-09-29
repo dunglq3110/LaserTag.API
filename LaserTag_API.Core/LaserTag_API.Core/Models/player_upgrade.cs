@@ -12,10 +12,8 @@ namespace LaserTag_API.Core.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int player_upgrade_id {  get; set; }
-        public int player_match_id { get; set; }
+        public string player_upgrade_id {  get; set; }
         public player_match player_match { get; set; }
-        public int upgrade_id { get; set; }
-        public upgrade upgrade {  get; set; }
+        public upgrade upgrade { get; set; }
     }
 }

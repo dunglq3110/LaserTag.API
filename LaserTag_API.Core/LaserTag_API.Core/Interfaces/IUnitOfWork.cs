@@ -12,10 +12,12 @@ namespace LaserTag_API.Core.Interfaces
         IPlayerRepository PlayerRepository { get; }
         IAttributeRepository AttributeRepository { get; }
         IConfigRepository ConfigRepository { get; }
+        IHitLogRepository HitLogRepository { get; }
+        IRoundRepository RoundRepository { get; }
+        ISharedBaseRepository SharedBaseRepository { get; }
+        ISharedGroupRepository SharedGroupRepository { get; }
 
-
-
-
+        IMatchRepository MatchRepository { get; }
         void SaveChangesLasertag();
         Task SaveChangesAsyncLasertag();
     }

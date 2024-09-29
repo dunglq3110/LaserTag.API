@@ -39,7 +39,7 @@ namespace LaserTag_API.Core.Repositories
             {
                 findconfig.name = updateconfig.name;
                 findconfig.code_name = updateconfig.code_name;
-                findconfig.config_type_id = updateconfig.config_type_id;
+                findconfig.config_type = updateconfig.config_type;
                 findconfig.value1 = updateconfig.value1;
                 findconfig.value2 = updateconfig.value2;
                 findconfig.value3 = updateconfig.value3;
@@ -57,7 +57,7 @@ namespace LaserTag_API.Core.Repositories
 
             return await _context.Configs.ToListAsync();
         }
-        public async Task<IEnumerable<config>> DeleteConfig(int deleteconfig)
+        public async Task<IEnumerable<config>> DeleteConfig(string deleteconfig)
         {
             var findconfig = await _context.Configs.FindAsync(deleteconfig);
 

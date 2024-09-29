@@ -25,7 +25,7 @@ namespace LaserTag.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<player>> GetPlayer(int id)
+        public async Task<ActionResult<player>> GetPlayer(string id)
         {
             var player = await _playerService.GetPlayersAsync(id);
             if(player == null)
@@ -50,7 +50,7 @@ namespace LaserTag.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<List<player>>> DeletePlayer(int id)
+        public async Task<ActionResult<List<player>>> DeletePlayer(string id)
         {
             var player = await _playerService.DeletePlayerAsync(id);
 

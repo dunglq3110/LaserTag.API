@@ -21,7 +21,7 @@ namespace LaserTag.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<config>> GetConfig(int id)
+        public async Task<ActionResult<config>> GetConfig(string id)
         {
             var config = await _configService.GetConfigsAsync(id);
             if (config == null)
@@ -46,7 +46,7 @@ namespace LaserTag.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<List<config>>> DeleteConfig(int id)
+        public async Task<ActionResult<List<config>>> DeleteConfig(string id)
         {
             var config = await _configService.DeleteConfigAsync(id);
 

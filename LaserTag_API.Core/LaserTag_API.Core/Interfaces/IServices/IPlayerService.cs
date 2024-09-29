@@ -10,9 +10,9 @@ namespace LaserTag_API.Core.Interfaces.IServices
     public interface IPlayerService
     {
         Task<IEnumerable<player>> GetAllPlayersAsync();
-        Task<player> GetPlayersAsync(int id);
+        Task<player> GetPlayersAsync(string id);
         Task<IEnumerable<player>> AddPlayerAsync(player player);
         Task<IEnumerable<player>> UpdatePlayerAsync(player updateplayer);
-        Task<IEnumerable<player>> DeletePlayerAsync(int deleteplayer);
+        Task<IEnumerable<player>> DeletePlayerAsync(string deleteplayer);
     }
 }

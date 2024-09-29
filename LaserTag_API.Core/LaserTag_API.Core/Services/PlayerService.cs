@@ -21,7 +21,7 @@ namespace LaserTag_API.Core.Services
         {
             return await _unitOfWork.PlayerRepository.GetAllAsync();
         }
-        public async Task<player> GetPlayersAsync(int id)
+        public async Task<player> GetPlayersAsync(string id)
         {
             return await _unitOfWork.PlayerRepository.GetByIdAsync(id);
         }
@@ -54,7 +54,7 @@ namespace LaserTag_API.Core.Services
 
             return await _unitOfWork.PlayerRepository.GetAllAsync();
         }
-        public async Task<IEnumerable<player>> DeletePlayerAsync(int deleteplayer)
+        public async Task<IEnumerable<player>> DeletePlayerAsync(string deleteplayer)
         {
             var findplayer = await _unitOfWork.PlayerRepository.GetByIdAsync(deleteplayer);
 

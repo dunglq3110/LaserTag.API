@@ -12,10 +12,10 @@ namespace LaserTag_API.Core.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int config_id { get; set; }
+        public string config_id { get; set; }
         public string name { get; set; }
         public string code_name { get; set; }
-        public string config_type_id { get; set; }
+        public shared_base config_type { get; set; }
         public string value1 { get; set; }
         public string value2 { get; set; }
         public string value3 { get; set; }

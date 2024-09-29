@@ -24,11 +24,9 @@ namespace LaserTag_API.Core.Data.Migrations
 
             modelBuilder.Entity("LaserTag_API.Core.Models.attribute", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<string>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("code_name")
                         .IsRequired()
@@ -52,19 +50,17 @@ namespace LaserTag_API.Core.Data.Migrations
 
             modelBuilder.Entity("LaserTag_API.Core.Models.config", b =>
                 {
-                    b.Property<int>("config_id")
+                    b.Property<string>("config_id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("config_id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("code_name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("config_type_id")
+                    b.Property<string>("config_typebase_id")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -96,70 +92,70 @@ namespace LaserTag_API.Core.Data.Migrations
 
                     b.HasKey("config_id");
 
+                    b.HasIndex("config_typebase_id");
+
                     b.ToTable("Configs");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.hit_log", b =>
                 {
-                    b.Property<int>("hit_log_id")
+                    b.Property<string>("hit_log_id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("hit_log_id"));
+                    b.Property<string>("hit_typebase_id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("hit_type_id")
+                    b.Property<string>("round_id")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("round_id")
-                        .HasColumnType("int");
+                    b.Property<string>("source_playerid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("round_id1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("source_player_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("target_player_id")
-                        .HasColumnType("int");
+                    b.Property<string>("target_playerid")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("value")
                         .HasColumnType("int");
 
                     b.HasKey("hit_log_id");
 
-                    b.HasIndex("round_id1");
+                    b.HasIndex("hit_typebase_id");
+
+                    b.HasIndex("round_id");
+
+                    b.HasIndex("source_playerid");
+
+                    b.HasIndex("target_playerid");
 
                     b.ToTable("Hit_Logs");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.match", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<string>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("stage_id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("stagebase_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("stagebase_id");
 
                     b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.player", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<string>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("balance")
                         .HasColumnType("decimal(10,2)");
@@ -189,23 +185,16 @@ namespace LaserTag_API.Core.Data.Migrations
 
             modelBuilder.Entity("LaserTag_API.Core.Models.player_attribute", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<string>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    b.Property<string>("attributeid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("attribute_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("attributeid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("player_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("playerid")
-                        .HasColumnType("int");
+                    b.Property<string>("playerid")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("value")
                         .IsRequired()
@@ -222,26 +211,19 @@ namespace LaserTag_API.Core.Data.Migrations
 
             modelBuilder.Entity("LaserTag_API.Core.Models.player_match", b =>
                 {
-                    b.Property<int>("player_match_id")
+                    b.Property<string>("player_match_id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("player_match_id"));
+                    b.Property<string>("matchid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("match_id")
-                        .HasColumnType("int");
+                    b.Property<string>("playerid")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("matchid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("player_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("playerid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("team_id")
-                        .HasColumnType("int");
+                    b.Property<string>("teambase_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("player_match_id");
 
@@ -249,32 +231,26 @@ namespace LaserTag_API.Core.Data.Migrations
 
                     b.HasIndex("playerid");
 
+                    b.HasIndex("teambase_id");
+
                     b.ToTable("Player_Matches");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.player_upgrade", b =>
                 {
-                    b.Property<int>("player_upgrade_id")
+                    b.Property<string>("player_upgrade_id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("player_upgrade_id"));
+                    b.Property<string>("player_match_id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("player_match_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("player_match_id1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("upgrade_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("upgradeid")
-                        .HasColumnType("int");
+                    b.Property<string>("upgradeid")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("player_upgrade_id");
 
-                    b.HasIndex("player_match_id1");
+                    b.HasIndex("player_match_id");
 
                     b.HasIndex("upgradeid");
 
@@ -283,23 +259,25 @@ namespace LaserTag_API.Core.Data.Migrations
 
             modelBuilder.Entity("LaserTag_API.Core.Models.round", b =>
                 {
-                    b.Property<int>("round_id")
+                    b.Property<string>("round_id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("round_id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("match_id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("round_stage_id")
+                    b.Property<string>("matchid")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("round_stagebase_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("round_id");
+
+                    b.HasIndex("matchid");
+
+                    b.HasIndex("round_stagebase_id");
 
                     b.ToTable("Rounds");
                 });
@@ -334,11 +312,7 @@ namespace LaserTag_API.Core.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("group_id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("shared_Groupgroup_id")
+                    b.Property<string>("group_id1")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -347,7 +321,7 @@ namespace LaserTag_API.Core.Data.Migrations
 
                     b.HasKey("base_id");
 
-                    b.HasIndex("shared_Groupgroup_id");
+                    b.HasIndex("group_id1");
 
                     b.ToTable("Shared_Bases");
                 });
@@ -389,43 +363,34 @@ namespace LaserTag_API.Core.Data.Migrations
 
             modelBuilder.Entity("LaserTag_API.Core.Models.shoot_log", b =>
                 {
-                    b.Property<int>("shoot_log_id")
+                    b.Property<string>("shoot_log_id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("shoot_log_id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("player_id")
-                        .HasColumnType("int");
+                    b.Property<string>("playerid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("playerid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("round_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("round_id1")
-                        .HasColumnType("int");
+                    b.Property<string>("round_id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("shoot_log_id");
 
                     b.HasIndex("playerid");
 
-                    b.HasIndex("round_id1");
+                    b.HasIndex("round_id");
 
                     b.ToTable("Shoot_Logs");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.upgrade", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<string>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("description")
                         .IsRequired()
@@ -445,23 +410,16 @@ namespace LaserTag_API.Core.Data.Migrations
 
             modelBuilder.Entity("LaserTag_API.Core.Models.upgrade_attribute", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<string>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    b.Property<string>("attributeid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("attribute_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("attributeid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("upgrade_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("upgradeid")
-                        .HasColumnType("int");
+                    b.Property<string>("upgradeid")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("value")
                         .HasColumnType("int");
@@ -475,15 +433,53 @@ namespace LaserTag_API.Core.Data.Migrations
                     b.ToTable("Upgrade_Attributes");
                 });
 
-            modelBuilder.Entity("LaserTag_API.Core.Models.hit_log", b =>
+            modelBuilder.Entity("LaserTag_API.Core.Models.config", b =>
                 {
-                    b.HasOne("LaserTag_API.Core.Models.round", "round")
+                    b.HasOne("LaserTag_API.Core.Models.shared_base", "config_type")
                         .WithMany()
-                        .HasForeignKey("round_id1")
+                        .HasForeignKey("config_typebase_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("config_type");
+                });
+
+            modelBuilder.Entity("LaserTag_API.Core.Models.hit_log", b =>
+                {
+                    b.HasOne("LaserTag_API.Core.Models.shared_base", "hit_type")
+                        .WithMany()
+                        .HasForeignKey("hit_typebase_id");
+
+                    b.HasOne("LaserTag_API.Core.Models.round", "round")
+                        .WithMany()
+                        .HasForeignKey("round_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LaserTag_API.Core.Models.player", "source_player")
+                        .WithMany()
+                        .HasForeignKey("source_playerid");
+
+                    b.HasOne("LaserTag_API.Core.Models.player", "target_player")
+                        .WithMany()
+                        .HasForeignKey("target_playerid");
+
+                    b.Navigation("hit_type");
+
                     b.Navigation("round");
+
+                    b.Navigation("source_player");
+
+                    b.Navigation("target_player");
+                });
+
+            modelBuilder.Entity("LaserTag_API.Core.Models.match", b =>
+                {
+                    b.HasOne("LaserTag_API.Core.Models.shared_base", "stage")
+                        .WithMany()
+                        .HasForeignKey("stagebase_id");
+
+                    b.Navigation("stage");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.player_attribute", b =>
@@ -496,9 +492,7 @@ namespace LaserTag_API.Core.Data.Migrations
 
                     b.HasOne("LaserTag_API.Core.Models.player", "player")
                         .WithMany()
-                        .HasForeignKey("playerid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("playerid");
 
                     b.Navigation("attribute");
 
@@ -515,43 +509,60 @@ namespace LaserTag_API.Core.Data.Migrations
 
                     b.HasOne("LaserTag_API.Core.Models.player", "player")
                         .WithMany()
-                        .HasForeignKey("playerid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("playerid");
+
+                    b.HasOne("LaserTag_API.Core.Models.shared_base", "team")
+                        .WithMany()
+                        .HasForeignKey("teambase_id");
 
                     b.Navigation("match");
 
                     b.Navigation("player");
+
+                    b.Navigation("team");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.player_upgrade", b =>
                 {
                     b.HasOne("LaserTag_API.Core.Models.player_match", "player_match")
                         .WithMany()
-                        .HasForeignKey("player_match_id1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("player_match_id");
 
                     b.HasOne("LaserTag_API.Core.Models.upgrade", "upgrade")
                         .WithMany()
-                        .HasForeignKey("upgradeid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("upgradeid");
 
                     b.Navigation("player_match");
 
                     b.Navigation("upgrade");
                 });
 
-            modelBuilder.Entity("LaserTag_API.Core.Models.shared_base", b =>
+            modelBuilder.Entity("LaserTag_API.Core.Models.round", b =>
                 {
-                    b.HasOne("LaserTag_API.Core.Models.shared_group", "shared_Group")
+                    b.HasOne("LaserTag_API.Core.Models.match", "match")
                         .WithMany()
-                        .HasForeignKey("shared_Groupgroup_id")
+                        .HasForeignKey("matchid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("shared_Group");
+                    b.HasOne("LaserTag_API.Core.Models.shared_base", "round_stage")
+                        .WithMany()
+                        .HasForeignKey("round_stagebase_id");
+
+                    b.Navigation("match");
+
+                    b.Navigation("round_stage");
+                });
+
+            modelBuilder.Entity("LaserTag_API.Core.Models.shared_base", b =>
+                {
+                    b.HasOne("LaserTag_API.Core.Models.shared_group", "group_id")
+                        .WithMany()
+                        .HasForeignKey("group_id1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("group_id");
                 });
 
             modelBuilder.Entity("LaserTag_API.Core.Models.shoot_log", b =>
@@ -564,9 +575,7 @@ namespace LaserTag_API.Core.Data.Migrations
 
                     b.HasOne("LaserTag_API.Core.Models.round", "round")
                         .WithMany()
-                        .HasForeignKey("round_id1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("round_id");
 
                     b.Navigation("player");
 
@@ -583,9 +592,7 @@ namespace LaserTag_API.Core.Data.Migrations
 
                     b.HasOne("LaserTag_API.Core.Models.upgrade", "upgrade")
                         .WithMany()
-                        .HasForeignKey("upgradeid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("upgradeid");
 
                     b.Navigation("attribute");
 
