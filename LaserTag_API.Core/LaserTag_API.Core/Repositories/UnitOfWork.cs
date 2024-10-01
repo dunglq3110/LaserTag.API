@@ -15,13 +15,26 @@ namespace LaserTag_API.Core.Repositories
     {
         private readonly AppDbContext _appDbContext;
         private readonly IPlayerRepository _playerRepository;
-
+        private readonly IAttributeRepository _attributeRepository;
+        private readonly IConfigRepository _configRepository;
+        private readonly IHitLogRepository _hitLogRepository;
+        private readonly IRoundRepository _roundRepository;
+        private readonly IMatchRepository _matchRepository;
+        private readonly ISharedGroupRepository _sharedGroupRepository;
+        private readonly ISharedBaseRepository _sharedBaseRepository;
         public UnitOfWork(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
 
         public IPlayerRepository PlayerRepository => _playerRepository  ?? new PlayerRepository(_appDbContext);
+        public IAttributeRepository AttributeRepository => _attributeRepository ?? new AttributeRepository(_appDbContext);
+        public IConfigRepository ConfigRepository => _configRepository ?? new ConfigRepository(_appDbContext);
+        public IHitLogRepository HitLogRepository => _hitLogRepository ?? new HitLogRepository(_appDbContext);
+        public IRoundRepository RoundRepository => _roundRepository ?? new RoundRepository(_appDbContext);
+        public IMatchRepository MatchRepository => _matchRepository ?? new MatchRepository(_appDbContext);
+        public ISharedBaseRepository SharedBaseRepository => _sharedBaseRepository ?? new SharedBaseRepository(_appDbContext);
+        public ISharedGroupRepository SharedGroupRepository => _sharedGroupRepository ?? new SharedGroupRepository(_appDbContext);
 
         public void SaveChangesLasertag()
         {

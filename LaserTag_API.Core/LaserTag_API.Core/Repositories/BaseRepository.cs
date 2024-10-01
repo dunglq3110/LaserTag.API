@@ -20,7 +20,7 @@ namespace LaserTag_API.Core.Repositories
             _db = con;
         }
 
-        public async Task<T> DeleteAsync(int id)
+        public async Task<T> DeleteAsync(string id)
         {
             var entity = await _db.Set<T>().FindAsync(id);
             if (entity != null)
@@ -51,7 +51,7 @@ namespace LaserTag_API.Core.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(string id)
         {
             return await _db.Set<T>().FindAsync(id);
         }

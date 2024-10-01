@@ -54,7 +54,7 @@ namespace LaserTag_API.Core.Repositories
 
             return await _context.Players.ToListAsync();
         }
-        public async Task<IEnumerable<player>> DeletePlayer(int deleteplayer)
+        public async Task<IEnumerable<player>> DeletePlayer(string deleteplayer)
         {
             var findplayer = await _context.Players.FindAsync(deleteplayer);
 

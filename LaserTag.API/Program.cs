@@ -58,6 +58,13 @@ builder.Services.AddDbContext<AppDbContext>(config =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IAttributeService, AttributeService>();
+builder.Services.AddScoped<IConfigService, ConfigService>();
+builder.Services.AddScoped<ISharedService, SharedService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<IHitLogService, HitLogService>();
+builder.Services.AddScoped<IRoundService, RoundService>();
+
 
 var app = builder.Build();
 
