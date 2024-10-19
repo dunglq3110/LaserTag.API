@@ -30,9 +30,9 @@ namespace LaserTag.Host.Frame
 
         //Client specific
         PlayerBuyUpgrade = 101,
-        PlayerShootLog = 102,
-        PlayerHitLog = 103,
+        PlayerGameLog = 102,
 
+        GameMessage = 200,
 
 
     }

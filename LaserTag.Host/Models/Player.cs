@@ -6,18 +6,40 @@ using System.Threading.Tasks;
 
 namespace LaserTag.Host.Models
 {
-    public class Player
-    {
-        public int Id { get; set; }
-        public string ConnectionId { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
-        public string MacGun { get; set; } = string.Empty;
-        public string MacVest { get; set; } = string.Empty;
-        public int CurrentHealth { get; set; }
-        public int CurrentBullet { get; set; }
-        public int Credit { get; set; } = 1000;
+    using CommunityToolkit.Mvvm.ComponentModel;
 
-        // A player can have multiple attributes
+    public partial class Player : ObservableObject
+    {
+        [ObservableProperty]
+        private int id;
+
+        [ObservableProperty]
+        private string connectionId = string.Empty;
+
+        [ObservableProperty]
+        private string name = string.Empty;
+
+        [ObservableProperty]
+        private string macGun = string.Empty;
+
+        [ObservableProperty]
+        private string macVest = string.Empty;
+
+        [ObservableProperty]
+        private int currentHealth;
+
+        [ObservableProperty]
+        private int currentBullet;
+
+        [ObservableProperty]
+        private int currentSSketchBullet;
+
+        [ObservableProperty]
+        private int currentArmor;
+
+        [ObservableProperty]
+        private int credit = 100000000;
+    
         public List<PlayerAttribute> PlayerAttributes { get; set; } = new List<PlayerAttribute>();
 
         // Add an attribute to the player
@@ -53,6 +75,8 @@ namespace LaserTag.Host.Models
         {
             return PlayerAttributes;
         }
+
+
     }
 
 }

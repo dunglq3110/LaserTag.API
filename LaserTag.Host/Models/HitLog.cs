@@ -19,7 +19,9 @@ namespace LaserTag.Host.Models
 
     public enum HitType
     {
-        Normal = 0 ,
-        True,
+        Normal = 0,
+        Healing = 1,
+        SSketch = 2,
+
     }
 }

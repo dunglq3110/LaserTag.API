@@ -28,9 +28,11 @@ namespace LaserTag.Host.Views
             InitializeComponent();
             DataContext = GameManager.Instance;
         }
-        private void PlayerCard_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+
+        private void PlayerDetails_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement element && element.DataContext is Player player)
+            if (sender is MenuItem menuItem &&
+                menuItem.DataContext is Player player)
             {
                 PlayerDetailsWindow detailsWindow = new PlayerDetailsWindow(player);
                 detailsWindow.Owner = Window.GetWindow(this);
@@ -38,43 +40,51 @@ namespace LaserTag.Host.Views
             }
         }
 
-        private void PlayerCard_PreviewMouseMove(object sender, MouseEventArgs e)
+        private void MoveToTeam1_Click(object sender, RoutedEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && sender is FrameworkElement element)
-            {
-                DragDrop.DoDragDrop(element, element.DataContext, DragDropEffects.Move);
-            }
+            MovePlayerToTeam(sender, GameManager.Instance.Team1Players, "Team 01");
         }
 
-        private void TeamListView_Drop(object sender, DragEventArgs e)
+        private void MoveToTeam2_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ListView targetListView && e.Data.GetData(typeof(Player)) is Player player)
-            {
-                var sourceTeam = GetSourceTeam(player);
-                var targetTeam = GetTargetTeam(targetListView);
+            MovePlayerToTeam(sender, GameManager.Instance.Team2Players, "Team 02");
+        }
 
-                if (sourceTeam != null && targetTeam != null && sourceTeam != targetTeam)
+        private void MoveToTeam3_Click(object sender, RoutedEventArgs e)
+        {
+            MovePlayerToTeam(sender, GameManager.Instance.Team3Players, "Team 03");
+        }
+
+        private void MoveToTeam4_Click(object sender, RoutedEventArgs e)
+        {
+            MovePlayerToTeam(sender, GameManager.Instance.Team4Players, "Team 04");
+        }
+
+        private void MovePlayerToTeam(object sender, ObservableCollection<Player> targetTeam, string teamName)
+        {
+            if (sender is MenuItem menuItem &&
+                menuItem.DataContext is Player player)
+            {
+                // Find the source team
+                var sourceTeam = GetSourceTeam(player);
+
+                if (sourceTeam != null && sourceTeam != targetTeam)
                 {
-                    GameManager.Instance.MovePlayer(player, sourceTeam, targetTeam);
+                    // Move the player
+                    sourceTeam.Remove(player);
+                    targetTeam.Add(player);
+                    GameManager.Instance.NotifyAllPlayerInfo("Player: " + player.Name + " moves to team: " + teamName);
                 }
             }
         }
 
         private ObservableCollection<Player> GetSourceTeam(Player player)
         {
-            if (GameManager.Instance.Team1Players.Contains(player)) return GameManager.Instance.Team1Players;
-            if (GameManager.Instance.Team2Players.Contains(player)) return GameManager.Instance.Team2Players;
-            if (GameManager.Instance.Team3Players.Contains(player)) return GameManager.Instance.Team3Players;
-            if (GameManager.Instance.Team4Players.Contains(player)) return GameManager.Instance.Team4Players;
-            return null;
-        }
-
-        private ObservableCollection<Player> GetTargetTeam(ListView listView)
-        {
-            if (listView.Name == "Team1ListView") return GameManager.Instance.Team1Players;
-            if (listView.Name == "Team2ListView") return GameManager.Instance.Team2Players;
-            if (listView.Name == "Team3ListView") return GameManager.Instance.Team3Players;
-            if (listView.Name == "Team4ListView") return GameManager.Instance.Team4Players;
+            var gameManager = GameManager.Instance;
+            if (gameManager.Team1Players.Contains(player)) return gameManager.Team1Players;
+            if (gameManager.Team2Players.Contains(player)) return gameManager.Team2Players;
+            if (gameManager.Team3Players.Contains(player)) return gameManager.Team3Players;
+            if (gameManager.Team4Players.Contains(player)) return gameManager.Team4Players;
             return null;
         }
     }

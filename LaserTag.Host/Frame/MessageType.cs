@@ -8,10 +8,11 @@ namespace LaserTag.Host.Frame
 {
     public enum MessageType
     {
-        Request,
-        Response,
-        Success,
-        Error,
-        Info
+        Request = 0,
+        Response = 1,
+        Success = 2,
+        Error = 3,
+        Info = 4,
+        Log = 5 
     }
 }

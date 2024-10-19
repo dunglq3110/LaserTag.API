@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:LaserTag.Host.Views"
+      xmlns:local="clr-namespace:LaserTag.Host.Views" 
+      xmlns:logic="clr-namespace:LaserTag.Host.Logic" d:DataContext="{d:DesignInstance Type=logic:GameManager}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MatchPage">
@@ -15,50 +16,288 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Team 1" FontWeight="Bold" FontSize="20" Margin="5"/>
+            <TextBlock Text="{Binding TeamWins[0], StringFormat='Team 1 Wins: {0}'}" 
+                       HorizontalAlignment="Center" 
+                       FontWeight="Bold" 
+                       FontSize="16" 
+                       Margin="0,10,0,10"/>
+            <ListView x:Name="Team1ListView" 
+                      ItemsSource="{Binding Team1Players}" 
+                      HorizontalContentAlignment="Stretch">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black" 
+                                BorderThickness="1" 
+                                Padding="5" 
+                                Margin="5"
+                                HorizontalAlignment="Stretch">
+                            <Grid Background="Transparent">
+                                <!-- Added transparent background to capture clicks -->
+                                <Grid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                        <MenuItem Header="Move to team">
+                                            <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
+                                            <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
+                                            <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
+                                            <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
 
-        <ListView x:Name="Team1ListView" Grid.Column="0" ItemsSource="{Binding Team1Players}" AllowDrop="True" Drop="TeamListView_Drop">
+                                <!-- Define Row Definitions for each data element -->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Name -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Health -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Armor -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Bullets and SSketch Bullets -->
+                                </Grid.RowDefinitions>
+
+                                <!-- Display Player Name -->
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Grid.Row="0" 
+                     VerticalAlignment="Center" />
+
+                                <!-- Display Player Health in Row 1 -->
+                                <StackPanel Orientation="Horizontal" Grid.Row="1" 
+                      HorizontalAlignment="Stretch">
+                                    <TextBlock Text="Health: " FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding CurrentHealth}" Margin="5,0"/>
+                                </StackPanel>
+
+                                <!-- Display Player Armor in Row 2 -->
+                                <StackPanel Orientation="Horizontal" Grid.Row="2"
+                      HorizontalAlignment="Stretch">
+                                    <TextBlock Text="Armor: " FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding CurrentArmor}" Margin="5,0"/>
+                                </StackPanel>
+
+                                <!-- Display Player Bullets and SSketch Bullets in Row 3 -->
+                                <StackPanel Orientation="Horizontal" Grid.Row="3"
+                      HorizontalAlignment="Stretch">
+                                    <TextBlock Text="Bullets: " FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding CurrentBullet}" Margin="5,0"/>
+
+                                    <TextBlock Text="SSketch Bullets: " FontWeight="Bold" Margin="10,0"/>
+                                    <TextBlock Text="{Binding CurrentSSketchBullet}" Margin="5,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+        
+
+        <ListView x:Name="Team2ListView" 
+                  Grid.Column="1" 
+                  ItemsSource="{Binding Team2Players}" 
+                  HorizontalContentAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Black" BorderThickness="1" Padding="5" Margin="5"
-                            MouseRightButtonDown="PlayerCard_MouseDoubleClick"
-                            PreviewMouseMove="PlayerCard_PreviewMouseMove">
-                        <TextBlock Text="{Binding Name}" />
+                    <Border BorderBrush="Black" 
+                            BorderThickness="1" 
+                            Padding="5" 
+                            Margin="5"
+                            HorizontalAlignment="Stretch">      
+                        <Grid Background="Transparent">
+                            <!-- Added transparent background to capture clicks -->
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                    <MenuItem Header="Move to team">
+                                        <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
+                                        <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
+                                        <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
+                                        <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+
+                            <!-- Define Row Definitions for each data element -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Name -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Health -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Armor -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Bullets and SSketch Bullets -->
+                            </Grid.RowDefinitions>
+
+                            <!-- Display Player Name -->
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Grid.Row="0" 
+                     VerticalAlignment="Center" />
+
+                            <!-- Display Player Health in Row 1 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" 
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Health: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentHealth}" Margin="5,0"/>
+                            </StackPanel>
+
+                            <!-- Display Player Armor in Row 2 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="2"
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Armor: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentArmor}" Margin="5,0"/>
+                            </StackPanel>
+
+                            <!-- Display Player Bullets and SSketch Bullets in Row 3 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="3"
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Bullets: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentBullet}" Margin="5,0"/>
+
+                                <TextBlock Text="SSketch Bullets: " FontWeight="Bold" Margin="10,0"/>
+                                <TextBlock Text="{Binding CurrentSSketchBullet}" Margin="5,0"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <ListView x:Name="Team2ListView" Grid.Column="1" ItemsSource="{Binding Team2Players}" AllowDrop="True" Drop="TeamListView_Drop">
+        <ListView x:Name="Team3ListView" 
+                  Grid.Column="2" 
+                  ItemsSource="{Binding Team3Players}" 
+                  HorizontalContentAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Black" BorderThickness="1" Padding="5" Margin="5"
-                            MouseRightButtonDown="PlayerCard_MouseDoubleClick"
-                            PreviewMouseMove="PlayerCard_PreviewMouseMove">
-                        <TextBlock Text="{Binding Name}" />
+                    <Border BorderBrush="Black" 
+                            BorderThickness="1" 
+                            Padding="5" 
+                            Margin="5"
+                            HorizontalAlignment="Stretch">
+                        <Grid Background="Transparent">
+                            <!-- Added transparent background to capture clicks -->
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                    <MenuItem Header="Move to team">
+                                        <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
+                                        <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
+                                        <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
+                                        <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+
+                            <!-- Define Row Definitions for each data element -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Name -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Health -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Armor -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Bullets and SSketch Bullets -->
+                            </Grid.RowDefinitions>
+
+                            <!-- Display Player Name -->
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Grid.Row="0" VerticalAlignment="Center" />
+
+                            <!-- Display Player Health in Row 1 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" 
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Health: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentHealth}" Margin="5,0"/>
+                            </StackPanel>
+
+                            <!-- Display Player Armor in Row 2 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="2"
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Armor: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentArmor}" Margin="5,0"/>
+                            </StackPanel>
+
+                            <!-- Display Player Bullets and SSketch Bullets in Row 3 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="3"
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Bullets: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentBullet}" Margin="5,0"/>
+
+                                <TextBlock Text="SSketch Bullets: " FontWeight="Bold" Margin="10,0"/>
+                                <TextBlock Text="{Binding CurrentSSketchBullet}" Margin="5,0"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <ListView x:Name="Team3ListView" Grid.Column="2" ItemsSource="{Binding Team3Players}" AllowDrop="True" Drop="TeamListView_Drop">
+        <ListView x:Name="Team4ListView" 
+                  Grid.Column="3" 
+                  ItemsSource="{Binding Team4Players}" 
+                  HorizontalContentAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Black" BorderThickness="1" Padding="5" Margin="5"
-                            MouseRightButtonDown="PlayerCard_MouseDoubleClick"
-                            PreviewMouseMove="PlayerCard_PreviewMouseMove">
-                        <TextBlock Text="{Binding Name}" />
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    <Border BorderBrush="Black" 
+                            BorderThickness="1" 
+                            Padding="5" 
+                            Margin="5"
+                            HorizontalAlignment="Stretch">
+                        <Grid Background="Transparent">
+                            <!-- Added transparent background to capture clicks -->
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                    <MenuItem Header="Move to team">
+                                        <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
+                                        <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
+                                        <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
+                                        <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
 
-        <ListView x:Name="Team4ListView" Grid.Column="3" ItemsSource="{Binding Team4Players}" AllowDrop="True" Drop="TeamListView_Drop">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Black" BorderThickness="1" Padding="5" Margin="5"
-                            MouseRightButtonDown="PlayerCard_MouseDoubleClick"
-                            PreviewMouseMove="PlayerCard_PreviewMouseMove">
-                        <TextBlock Text="{Binding Name}" />
+                            <!-- Define Row Definitions for each data element -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Name -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Health -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Armor -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Bullets and SSketch Bullets -->
+                            </Grid.RowDefinitions>
+
+                            <!-- Display Player Name -->
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Grid.Row="0" 
+                     VerticalAlignment="Center" />
+
+                            <!-- Display Player Health in Row 1 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" 
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Health: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentHealth}" Margin="5,0"/>
+                            </StackPanel>
+
+                            <!-- Display Player Armor in Row 2 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="2"
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Armor: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentArmor}" Margin="5,0"/>
+                            </StackPanel>
+
+                            <!-- Display Player Bullets and SSketch Bullets in Row 3 -->
+                            <StackPanel Orientation="Horizontal" Grid.Row="3"
+                      HorizontalAlignment="Stretch">
+                                <TextBlock Text="Bullets: " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentBullet}" Margin="5,0"/>
+
+                                <TextBlock Text="SSketch Bullets: " FontWeight="Bold" Margin="10,0"/>
+                                <TextBlock Text="{Binding CurrentSSketchBullet}" Margin="5,0"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>

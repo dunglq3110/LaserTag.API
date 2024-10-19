@@ -12,65 +12,7 @@
         Height="600" 
         Width="800" 
         KeyDown="MainWindow_KeyDown">
-    <Window.Resources>
-        <Style x:Key="TabButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#DDDDDD"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="BorderThickness" Value="0,0,0,2"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#EEEEEE"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#CCCCCC"/>
-                    <Setter Property="BorderBrush" Value="#007ACC"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
 
-        <Style x:Key="ActionButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#007ACC"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="15,5"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="3">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#005A9E"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#003E6E"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -96,27 +38,57 @@
 
         <!-- Right side panel -->
         <Grid Grid.Row="1" Grid.Column="1">
+
             <Grid.RowDefinitions>
+
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="Auto"/>
+
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+
                 <RowDefinition Height="*"/>
+
             </Grid.RowDefinitions>
+
             <TextBlock Grid.Row="0" Text="{Binding IpAddress}" FontSize="18" Margin="10"/>
+
             <Button Grid.Row="1" Content="Wifi Connect" Click="WifiConnect_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            <Button Grid.Row="2" Content="Start Game" Click="PlayGame_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            <Button Grid.Row="3" Content="Start Round" Click="StartRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            <Button Grid.Row="4" Content="Battle phase" Click="BattlePhase_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            <Button Grid.Row="5" Content="End Round" Click="EndRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            <Button Grid.Row="6" Content="Pause Round" Click="PauseRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            <Button Grid.Row="7" Content="Resume Round" Click="ResumeRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            <Button Grid.Row="8" Content="End Match" Click="EndMatch_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+
+            <Button Grid.Row="2" Content="New Match" Click="NewMatch_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+
+            <Button Grid.Row="3" Content="Start Match" Click="StartMatch_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+            
+            <Button Grid.Row="4" Content="End Match" Click="EndMatch_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+            
+            <Button Grid.Row="5" Content="New Round" Click="NewRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+            
+            <Button Grid.Row="6" Content="Start Round" Click="StartRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+
+            <Button Grid.Row="7" Content="Battle phase" Click="BattlePhase_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+
+            <Button Grid.Row="8" Content="End Round" Click="EndRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+
+            <Button Grid.Row="9" Content="Pause Round" Click="PauseRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+
+            <Button Grid.Row="10" Content="Resume Round" Click="ResumeRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
+
+            
+
         </Grid>
     </Grid>
 

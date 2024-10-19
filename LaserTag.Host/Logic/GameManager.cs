@@ -106,14 +106,8 @@ namespace LaserTag.Host.Logic
         {
             sourceTeam.Remove(player);
             targetTeam.Add(player);
-            var response = new HostFrameDataBuilder<object>()
-                        .SetActionCode(HostActionCode.UpdatePlayerData)
-                        .SetMessageType(MessageType.Info)
-                        .SetMessage("Player " + player.Name + " Move to team __")
-                        .Build();
-            //NotifyAllPlayerExcept(response, player.ConnectionId);
-            string data = JsonConvert.SerializeObject(response);
-            NotifyAllPlayer(data);
+            NotifyAllPlayerInfo("Player " + player.Name + " Move to team __");
+            
         }
 
         public void AddPlayer(PlayerClientSession playerClientSession)
@@ -126,19 +120,14 @@ namespace LaserTag.Host.Logic
                 AllPlayers.Add(playerClientSession.Player);
             });
 
-            var response = new HostFrameDataBuilder<object>()
-                        .SetActionCode(HostActionCode.InitialConnection)
-                        .SetMessageType(MessageType.Info)
-                        .SetMessage("Player " + playerClientSession.Player.Name + " Joined the room!!")
-                        .Build();
-            //NotifyAllPlayerExcept(response, player.ConnectionId);
-            string data = JsonConvert.SerializeObject(response);
-            NotifyAllPlayer(data);
+            NotifyAllPlayerInfo("Player " + playerClientSession.Player.Name + " Joined the room!!");
 
         }
 
         public void RemovePlayer(Player player)
         {
+            AllPlayers.Remove(player);
+            PlayerClients.Remove(player.ConnectionId);
         }
 
         public void NotifyAllPlayer(string data)
@@ -162,6 +151,17 @@ namespace LaserTag.Host.Logic
                     playerClient.Value.SendData(data);
                 }
             }
+        }
+
+        public void NotifyAllPlayerInfo(string message)
+        {
+            var dataFrame = new HostFrameDataBuilder<Object>()
+                       .SetActionCode(HostActionCode.GameMessage)
+                       .SetMessageType(MessageType.Info)
+                       .SetMessage(message)
+                       .Build();
+            var data = JsonConvert.SerializeObject(dataFrame);
+            NotifyAllPlayer(data);
         }
         #endregion
 
@@ -312,8 +312,12 @@ namespace LaserTag.Host.Logic
         #endregion
 
         #region Game play
+        //debug
         [ObservableProperty]
-        private Match match;
+        private Match match = new();
+
+        [ObservableProperty]
+        private Round currentRound = new();
 
         [ObservableProperty]
         private ObservableCollection<Round> rounds = [];
@@ -322,44 +326,70 @@ namespace LaserTag.Host.Logic
         private ObservableCollection<Config> gameConfigs = [];
 
         [ObservableProperty]
-        private Round currentRound;
+        private ObservableCollection<int> teamWins = [0, 0, 0, 0];
 
-        [ObservableProperty]
-        private int roundPermach;
-
-        [ObservableProperty]
-        private int timePerRound; //in seconds
-
-
-
-
-        public void StartGame()
+        public void NewMatch()
         {
-            
-            SendTeamCredential();
-            Match = new Match();
-
-            var gameStartFrame = new HostFrameDataBuilder<Object>()
-                       .SetActionCode(HostActionCode.StartMatch)
-                       .SetMessageType(MessageType.Info)
-                       .SetMessage("Game start!!")
-                       .Build();
-            string data = JsonConvert.SerializeObject(gameStartFrame);
-            NotifyAllPlayer(data);
+            Match = new();
         }
+        public void StartMatch()
+        {
+            if (AllPlayers.Count < 2)
+            {
+                MessageBox.Show("Need at least 2 players to start match!!");
+                return;
+            }
+            if (Match.Stage != MatchStage.Lobbying)
+            {
+                MessageBox.Show("Create new match before Starting!!");
+                return;
+            }
 
+            Match.Stage = MatchStage.Started;
+            Match.StartTime = DateTime.Now;
+
+            SendTeamCredential();
+
+            NotifyAllPlayerInfo("Game start!!");
+        }
+        public void EndMatch()
+        {
+            if (Match.Stage != MatchStage.Started)
+            {
+                MessageBox.Show("Start match before Ending!!");
+                return;
+            }
+            int winnerTeam = FindWinnerTeamOfMatch();
+            if (winnerTeam == 0)
+            {
+                NotifyAllPlayerInfo("Match ended in a draw!!");
+            }
+            else
+            {
+                NotifyAllPlayerInfo("Team " + winnerTeam + " wins the Match!!");
+            }
+            Match = new();
+            NotifyAllPlayerInfo("Match End!!");
+            
+        }
+        public void NewRound()
+        {
+            CurrentRound = new Round();
+            Rounds.Add(CurrentRound);
+            NotifyAllPlayerInfo("Round Created!!");
+        }
         public void StartRoundBuyPhase()
         {
             //BattlePhase
-            CurrentRound = new Round();
-            Rounds.Add(CurrentRound);
-            var newRoundFrame = new HostFrameDataBuilder<Object>()
-                       .SetActionCode(HostActionCode.StartRound)
-                       .SetMessageType(MessageType.Info)
-                       .SetMessage("Round started!!")
-                       .Build();
-            NotifyAllPlayer(JsonConvert.SerializeObject(newRoundFrame));
-
+            if (CurrentRound.Stage != RoundStage.Lobbying)
+            {
+                MessageBox.Show("Create new round before Starting!!");
+                return;
+            }
+            CurrentRound.StartTime = DateTime.Now;
+            CurrentRound.Stage = RoundStage.BuyPhase;
+            NotifyAllPlayerInfo("Round started!!");
+            
             foreach (var player in AllPlayers)
             {
                 var upgradesFrame = new HostFrameDataBuilder<ListUpgradesDTO>()
@@ -375,66 +405,60 @@ namespace LaserTag.Host.Logic
                 PlayerClients[player.ConnectionId].SendData(JsonConvert.SerializeObject(upgradesFrame));
             }
             PrepareForNewRound();
-            //player buy some upgrades
-/*            PlayerBuyUpgrade(1, 1);
-            PlayerBuyUpgrade(2, 1);
-            PlayerBuyUpgrade(2, 2);*/
         }
 
         public void BattlePhase()
         {
+            if (CurrentRound.Stage != RoundStage.BuyPhase)
+            {
+                MessageBox.Show("Start Buy Phase before Battle!!");
+                return;
+            }
+            CurrentRound.Stage = RoundStage.BattlePhase;
             AssignPlayerAttributeAfterUpgrades();
             SendPlayerAttributes();
-            var battlePhaseFrame = new HostFrameDataBuilder<Object>()
-                       .SetActionCode(HostActionCode.BattlePhase)
-                       .SetMessageType(MessageType.Info)
-                       .SetMessage("Battle Phase!!")
-                       .Build();
-            NotifyAllPlayer(JsonConvert.SerializeObject(battlePhaseFrame));
+            NotifyAllPlayerInfo("Battle Phase!!");
         }
         public void EndRound()
         {
+            if (CurrentRound.Stage != RoundStage.BattlePhase)
+            {
+                MessageBox.Show("Start Battle Phase before Ending!!");
+                return;
+            }
             CurrentRound.EndTime = DateTime.Now;
-            var endRoundFrame = new HostFrameDataBuilder<Object>()
-                       .SetActionCode(HostActionCode.StartRound)
-                       .SetMessageType(MessageType.Info)
-                       .SetMessage("Round ended!!")
-                       .Build();
-            var data = JsonConvert.SerializeObject(endRoundFrame);
-            NotifyAllPlayer(data);
+            int winnerTeam = FindWinnerTeamOfRound();
+            if (winnerTeam == 0)
+            {
+                NotifyAllPlayerInfo("Round ended in a draw!!");
+            }
+            else
+            {
+                NotifyAllPlayerInfo("Team " + winnerTeam + " wins the round!!");
+                TeamWins[winnerTeam - 1]++;
+            }
+            NotifyAllPlayerInfo("Round ended!!");
+
+            
         }
         public void PauseRound()
         {
-            var endRoundFrame = new HostFrameDataBuilder<Object>()
-                       .SetActionCode(HostActionCode.PauseRound)
-                       .SetMessageType(MessageType.Info)
-                       .SetMessage("Round Paused!!")
-                       .Build();
-            var data = JsonConvert.SerializeObject(endRoundFrame);
-            NotifyAllPlayer(data);
+            CurrentRound.Stage = RoundStage.Paused;
+            NotifyAllPlayerInfo("Round Paused!!");
         }
 
         public void ResumeRound()
         {
-            var endRoundFrame = new HostFrameDataBuilder<Object>()
-                       .SetActionCode(HostActionCode.ResumeRound)
-                       .SetMessageType(MessageType.Info)
-                       .SetMessage("Round Resume!!")
-                       .Build();
-            var data = JsonConvert.SerializeObject(endRoundFrame);
-            NotifyAllPlayer(data);
+            if (CurrentRound.Stage != RoundStage.Paused)
+            {
+                MessageBox.Show("Pause Round before Resuming!!");
+                return;
+            }
+            NotifyAllPlayerInfo("Round Resume!!");
+
         }
 
-        public void EndMatch()
-        {
-            var endRoundFrame = new HostFrameDataBuilder<Object>()
-                       .SetActionCode(HostActionCode.EndMatch)
-                       .SetMessageType(MessageType.Info)
-                       .SetMessage("Match End!!")
-                       .Build();
-            var data = JsonConvert.SerializeObject(endRoundFrame);
-            NotifyAllPlayer(data);
-        }
+        
 
         public void SendTeamCredential()
         {
@@ -476,7 +500,7 @@ namespace LaserTag.Host.Logic
                 credentials.Add(credential);
             }
             var hostFrameData = new HostFrameDataBuilder<List<PlayerCredentialResponse>>()
-                        .SetActionCode(HostActionCode.UpdatePlayerData)
+                        .SetActionCode(HostActionCode.SendPlayerCredentials)
                         .SetMessageType(MessageType.Response)
                         .SetMessage("Player Credentials")
                         .SetData(credentials)
@@ -487,20 +511,98 @@ namespace LaserTag.Host.Logic
 
         }
 
-        
+        public int FindWinnerTeamOfRound()
+        {
+            // Step 1: Calculate the number of surviving players and total health for each team.
+            var teamSurvivors = new (int survivingCount, int totalHealth)[]
+            {
+                (Team1Players.Count(p => p.CurrentHealth > 0), Team1Players.Where(p => p.CurrentHealth > 0).Sum(p => p.CurrentHealth)),
+                (Team2Players.Count(p => p.CurrentHealth > 0), Team2Players.Where(p => p.CurrentHealth > 0).Sum(p => p.CurrentHealth)),
+                (Team3Players.Count(p => p.CurrentHealth > 0), Team3Players.Where(p => p.CurrentHealth > 0).Sum(p => p.CurrentHealth)),
+                (Team4Players.Count(p => p.CurrentHealth > 0), Team4Players.Where(p => p.CurrentHealth > 0).Sum(p => p.CurrentHealth))
+            };
 
+            // Step 2: Find the maximum number of survivors.
+            int maxSurvivingPlayers = teamSurvivors.Max(t => t.survivingCount);
+
+            // Step 3: Get all teams that have the maximum number of survivors.
+            var teamsWithMaxSurvivors = teamSurvivors
+                .Select((team, index) => (index + 1, team.survivingCount, team.totalHealth)) // Add 1 to index for 1-based team index.
+                .Where(t => t.survivingCount == maxSurvivingPlayers)
+                .ToList();
+
+            // Step 4: If there's only one team with the highest number of survivors, return that team.
+            if (teamsWithMaxSurvivors.Count == 1)
+            {
+                return teamsWithMaxSurvivors[0].Item1; // Return the team index (1-based).
+            }
+
+            // Step 5: If multiple teams have the same number of survivors, compare total health.
+            int maxTotalHealth = teamsWithMaxSurvivors.Max(t => t.totalHealth);
+            var teamsWithMaxHealth = teamsWithMaxSurvivors
+                .Where(t => t.totalHealth == maxTotalHealth)
+                .ToList();
+
+            // Step 6: If only one team has the highest total health, return that team.
+            if (teamsWithMaxHealth.Count == 1)
+            {
+                return teamsWithMaxHealth[0].Item1; // Return the team index (1-based).
+            }
+
+            // Step 7: If it's still a tie, return 0 to represent a draw.
+            return 0;
+        }
+
+        public int FindWinnerTeamOfMatch()
+        {
+            // Step 1: Find the maximum number of wins among all teams.
+            int maxWins = teamWins.Max();
+
+            // Step 2: Get all teams that have the maximum number of wins.
+            var teamsWithMaxWins = teamWins
+                .Select((wins, index) => (index + 1, wins)) // Add 1 to index for 1-based team index.
+                .Where(t => t.wins == maxWins)
+                .ToList();
+
+            // Step 3: If only one team has the most wins, return that team.
+            if (teamsWithMaxWins.Count == 1)
+            {
+                return teamsWithMaxWins[0].Item1; // Return the team index (1-based).
+            }
+
+            // Step 4: If multiple teams have the same number of wins, return 0 for a draw.
+            return 0;
+        }
+
+
+
+        #endregion
+
+        #region Game Logs
+
+        [ObservableProperty]
+        private ObservableCollection<ShootLog> shootLogs = [];
+
+        [ObservableProperty]
+        private ObservableCollection<HitLog> hitLogs = [];
         #endregion
 
         #endregion
 
-
-
+        #region Utils
         public void Test()
         {
-            
-            var test1 = AllPlayers;
-            
+
+            var test1 = FindWinnerTeamOfRound();           
+            var test2 = TeamWins;
+            var test3 = FindWinnerTeamOfMatch();
+            var a = 1;
         }
+
+        
+        #endregion
+
+
 
         #region InitData
         public void InitDataAttribute()
@@ -509,12 +611,12 @@ namespace LaserTag.Host.Logic
             var configData = new List<Config>
             {
                 //Default player attributes
-                new Config { Id = 1, Name = "Default Player Damage", CodeName = "damage_value", Value1 = "10" },
+                new Config { Id = 1, Name = "Default Player Damage", CodeName = "damage_value", Value1 = "100" },
                 new Config { Id = 2, Name = "Default Player Max Bullet", CodeName = "bullet_max", Value1 = "10" },
                 new Config { Id = 3, Name = "Player Fire Level", CodeName = "fire_level", Value1 = "0" },
-                new Config { Id = 4, Name = "Max Health", CodeName = "health_max", Value1 = "100" },
+                new Config { Id = 4, Name = "Max Health", CodeName = "health_max", Value1 = "10000" },
                 new Config { Id = 5, Name = "Armor", CodeName = "armor_value", Value1 = "50" },
-                new Config { Id = 6, Name = "Initial money", CodeName = "money_init", Value1 = "1000" },
+                new Config { Id = 6, Name = "Initial money", CodeName = "money_init", Value1 = "100000" },
                
             };
 
@@ -625,6 +727,8 @@ namespace LaserTag.Host.Logic
                 GameConfigs.Add(config);
             }
         }
+
+        
         #endregion
     }
 }

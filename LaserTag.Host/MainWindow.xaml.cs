@@ -50,10 +50,23 @@ namespace LaserTag.Host
             //GameProgressButton.BorderBrush = (SolidColorBrush)FindResource("AccentColorBrush");
             MatchButton.BorderBrush = Brushes.Transparent;
         }
-
-        private void PlayGame_Click(object sender, RoutedEventArgs e)
+        private void NewMatch_Click(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.StartGame();
+            GameManager.Instance.NewMatch();
+        }
+        private void StartMatch_Click(object sender, RoutedEventArgs e)
+        {
+            GameManager.Instance.StartMatch();
+        }
+        private void EndMatch_Click(object sender, RoutedEventArgs e)
+        {
+            GameManager.Instance.EndMatch();
+        }
+
+
+        private void NewRound_Click(object sender, RoutedEventArgs e)
+        {
+            GameManager.Instance.NewRound();
         }
         private void StartRound_Click(object sender, RoutedEventArgs e)
         {
@@ -75,14 +88,11 @@ namespace LaserTag.Host
         {
             GameManager.Instance.ResumeRound();
         }
-        private void EndMatch_Click(object sender, RoutedEventArgs e)
-        {
-            GameManager.Instance.EndMatch();
-        }
+        
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            // Check if the pressed key is "Z"
+            // Check if the pressed key is "Z" for debugger
             if (e.Key == Key.Z)
             {
                 GameManager.Instance.Test();
