@@ -16,5 +16,17 @@ namespace LaserTag.Host.Models
         public GameAttribute GameAttribute { get; set; }
 
         public int Value { get; set; }
+
+        public UpgradeAttribute(int id, Upgrade upgrade, GameAttribute gameAttribute, int value)
+        {
+            Id = id;
+            Upgrade = upgrade;
+            GameAttribute = gameAttribute.Clone();
+            Value = value;
+        }
+
+        public UpgradeAttribute()
+        {
+        }
     }
 }

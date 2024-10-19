@@ -13,5 +13,22 @@ namespace LaserTag.Host.Models
         public string Description { get; set; } = "";
         public string CodeName { get; set; } = "";
         public bool IsGun { get; set; }
+
+        public GameAttribute Clone()
+        {
+            return new GameAttribute
+            {
+                Id = this.Id,
+                Name = this.Name,
+                Description = this.Description,
+                CodeName = this.CodeName,
+                IsGun = this.IsGun
+            };
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} + ({CodeName})";
+        }
     }
 }

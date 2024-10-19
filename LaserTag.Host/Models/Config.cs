@@ -20,5 +20,10 @@ namespace LaserTag.Host.Models
         public string Value5 { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        public override string ToString()
+        {
+            return $"{Name} ({CodeName}): " + Value1;
+        }
+
     }
 }

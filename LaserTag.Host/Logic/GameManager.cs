@@ -665,33 +665,14 @@ namespace LaserTag.Host.Logic
                     Attributes = new List<UpgradeAttribute>()
                 }
             };
+            
 
             var upgradeAttributes = new List<UpgradeAttribute>
             {
-                new UpgradeAttribute
-                {
-                    Id = 1,
-                    GameAttribute = GameAttributes.First(g => g.Id == 1), // Damage Value 
-                    Value = 10
-                },
-                new UpgradeAttribute
-                {
-                    Id = 2,
-                    GameAttribute = GameAttributes.First(g => g.Id == 2), // Max Bullet 
-                    Value = 5
-                },
-                new UpgradeAttribute
-                {
-                    Id = 6,
-                    GameAttribute = GameAttributes.First(g => g.Id == 4), // Max Health 
-                    Value = 50
-                },
-                new UpgradeAttribute
-                {
-                    Id = 7,
-                    GameAttribute = GameAttributes.First(g => g.Id == 5), // Armor
-                    Value = 50
-                }
+                new UpgradeAttribute (1, newUpgrades[0], GameAttributes[0], 10), // Attack plus - Damage Value
+                new UpgradeAttribute (2, newUpgrades[0], GameAttributes[1], 5), // Attack plus - Max Bullet                 
+                new UpgradeAttribute (3, newUpgrades[1], GameAttributes[3], 50), // Defense plus - Max Health            
+                new UpgradeAttribute (4, newUpgrades[1], GameAttributes[4], 50) // Defense plus - Armor
             };
 
             // Associate UpgradeAttributes with their corresponding Upgrades
