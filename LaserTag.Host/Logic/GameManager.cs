@@ -633,7 +633,7 @@ namespace LaserTag.Host.Logic
                 new GameAttribute { Id = 2, Name = "Max Bullet", CodeName = "bullet_max", IsGun = true },
                 new GameAttribute { Id = 3, Name = "Fire Level", CodeName = "fire_level", IsGun = true },
                 new GameAttribute { Id = 4, Name = "Max Health", CodeName = "health_max", IsGun = false },
-                new GameAttribute { Id = 5, Name = "Armor", CodeName = "armor_value", IsGun = false }
+                new GameAttribute { Id = 5, Name = "Armor", CodeName = "armor_value", IsGun = false },
             };
 
             // Add to the existing ObservableCollection
@@ -663,7 +663,15 @@ namespace LaserTag.Host.Logic
                     Cost = 400,
                     Description = "Increases defense attributes.",
                     Attributes = new List<UpgradeAttribute>()
-                }
+                },
+                new Upgrade
+                {
+                    Id = 3,
+                    Name = "Fire plus",
+                    Cost = 400,
+                    Description = "Increases Fire attributes.",
+                    Attributes = new List<UpgradeAttribute>()
+                },
             };
 
             var upgradeAttributes = new List<UpgradeAttribute>
@@ -693,6 +701,8 @@ namespace LaserTag.Host.Logic
                     Value = 50
                 }
             };
+            // Class Health
+            //Heral health 
 
             // Associate UpgradeAttributes with their corresponding Upgrades
             newUpgrades[0].Attributes.Add(upgradeAttributes[0]); // Attack plus - Damage Value
