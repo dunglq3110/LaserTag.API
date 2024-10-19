@@ -30,6 +30,11 @@ namespace LaserTag.Host.Models
             Stage = MatchStage.Lobbying;
             Rounds = new ObservableCollection<Round>();
         }
+
+        public override string ToString()
+        {
+            return $"Start: {StartTime}, End: {EndTime}";
+        }
     }
 
     public enum MatchStage

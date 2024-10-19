@@ -43,6 +43,11 @@ namespace LaserTag.Host.Models
         public List<PlayerAttribute> PlayerAttributes { get; set; } = new List<PlayerAttribute>();
 
         // Add an attribute to the player
+
+        public override string ToString()
+        {
+            return $"Name: {Name}";
+        }
         public void AddAttribute(GameAttribute attribute, int value)
         {
             PlayerAttributes.Add(new PlayerAttribute

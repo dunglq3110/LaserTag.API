@@ -15,6 +15,11 @@ namespace LaserTag.Host.Models
         public HitType HitType { get; set; } 
         public int Damage { get; set; }
         public DateTime Time { get; set; }
+
+        public override string ToString()
+        {
+            return $"Shooter: {Shooter.Name}, Target: {Target.Name}, Damage: {Damage}, Time: {Time}"
+        }
     }
 
     public enum HitType
@@ -22,6 +27,7 @@ namespace LaserTag.Host.Models
         Normal = 0,
         Healing = 1,
         SSketch = 2,
-
     }
+
+   
 }
