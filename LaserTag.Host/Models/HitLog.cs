@@ -18,7 +18,7 @@ namespace LaserTag.Host.Models
 
         public override string ToString()
         {
-            return $"Shooter: {Shooter.Name}, Target: {Target.Name}, Damage: {Damage}, Time: {Time}"
+            return $"Shooter: {Shooter.Name}, Target: {Target.Name}, Damage: {Damage}, Time: {Time}";
         }
     }
 
