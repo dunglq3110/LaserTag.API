@@ -82,11 +82,11 @@ namespace LaserTag.Host.Logic
 
                     GameManager.Instance.AddPlayer(this);
                     var response = new HostFrameDataBuilder<object>()
-                        .SetActionCode(HostActionCode.InitialConnection)
+                        .SetActionCode(HostActionCode.GameMessage)
                         .SetMessageType(MessageType.Success)
                         .SetMessage("You are added, Enjoy!")
                         .Build();
-                    string data = JsonConvert.SerializeObject(response);
+                    string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                     SendData(data);
                 }
             }
@@ -97,7 +97,7 @@ namespace LaserTag.Host.Logic
                         .SetMessageType(MessageType.Error)
                         .SetMessage(ex.Message)
                         .Build();
-                string data = JsonConvert.SerializeObject(response);
+                string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                 SendData(data);
 
             }
@@ -116,7 +116,7 @@ namespace LaserTag.Host.Logic
                     .SetMessageType(MessageType.Success)
                     .SetMessage("You profile updated! , Enjoy!")
                     .Build();
-                string data = JsonConvert.SerializeObject(response);
+                string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                 SendData(data);
             }
             catch (Exception ex)
@@ -126,12 +126,11 @@ namespace LaserTag.Host.Logic
                         .SetMessageType(MessageType.Error)
                         .SetMessage(ex.Message)
                         .Build();
-                string data = JsonConvert.SerializeObject(response);
+                string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                 SendData(data);
 
             }
         }
-
 
         private void HandlePlayerBuyUpgrade(string frameData)
         {
@@ -148,7 +147,7 @@ namespace LaserTag.Host.Logic
                     .SetMessageType(MessageType.Success)
                     .SetMessage("Your upgrades applied!!")
                     .Build();
-                string data = JsonConvert.SerializeObject(response);
+                string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                 SendData(data);
             }
             catch (Exception ex)
@@ -158,12 +157,11 @@ namespace LaserTag.Host.Logic
                         .SetMessageType(MessageType.Error)
                         .SetMessage(ex.Message)
                         .Build();
-                string data = JsonConvert.SerializeObject(response);
+                string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                 SendData(data);
 
             }
         }
-
 
 
         #endregion
@@ -217,7 +215,7 @@ namespace LaserTag.Host.Logic
                         .SetMessageType(MessageType.Error)
                         .SetMessage(ex.Message)
                         .Build();
-                string data = JsonConvert.SerializeObject(response);
+                string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                 SendData(data);
 
             }

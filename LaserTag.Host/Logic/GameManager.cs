@@ -67,6 +67,7 @@ namespace LaserTag.Host.Logic
             }
             catch (Exception ex)
             {
+                MessageBox.Show("error: " + ex.Message);
                 // Handle exception if necessary
             }
         }
@@ -160,7 +161,7 @@ namespace LaserTag.Host.Logic
                        .SetMessageType(MessageType.Info)
                        .SetMessage(message)
                        .Build();
-            var data = JsonConvert.SerializeObject(dataFrame);
+            var data = JsonConvert.SerializeObject(dataFrame, Formatting.Indented);
             NotifyAllPlayer(data);
         }
         #endregion
@@ -304,7 +305,7 @@ namespace LaserTag.Host.Logic
                     .Build();
 
                 // Serialize and send the data to the player
-                string serializedFrame = JsonConvert.SerializeObject(attributesFrame);
+                string serializedFrame = JsonConvert.SerializeObject(attributesFrame, Formatting.Indented);
                 PlayerClients[player.ConnectionId].SendData(serializedFrame);
             }
         }
@@ -402,7 +403,7 @@ namespace LaserTag.Host.Logic
                            Upgrades = Upgrades.ToList()
                        })
                        .Build();
-                PlayerClients[player.ConnectionId].SendData(JsonConvert.SerializeObject(upgradesFrame));
+                PlayerClients[player.ConnectionId].SendData(JsonConvert.SerializeObject(upgradesFrame, Formatting.Indented));
             }
             PrepareForNewRound();
         }
@@ -505,7 +506,7 @@ namespace LaserTag.Host.Logic
                         .SetMessage("Player Credentials")
                         .SetData(credentials)
                         .Build();
-            string data = JsonConvert.SerializeObject(hostFrameData);
+            string data = JsonConvert.SerializeObject(hostFrameData, Formatting.Indented);
             NotifyAllPlayer(data);
             // Loop through the PlayerClients and send the credentials to each player
 
@@ -556,10 +557,10 @@ namespace LaserTag.Host.Logic
         public int FindWinnerTeamOfMatch()
         {
             // Step 1: Find the maximum number of wins among all teams.
-            int maxWins = teamWins.Max();
+            int maxWins = TeamWins.Max();
 
             // Step 2: Get all teams that have the maximum number of wins.
-            var teamsWithMaxWins = teamWins
+            var teamsWithMaxWins = TeamWins
                 .Select((wins, index) => (index + 1, wins)) // Add 1 to index for 1-based team index.
                 .Where(t => t.wins == maxWins)
                 .ToList();
