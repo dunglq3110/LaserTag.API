@@ -11,31 +11,33 @@
             <helper:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <helper:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
 
-            <Style x:Key="ActionButtonStyle" TargetType="Button">
-                <Setter Property="Padding" Value="20,10"/>
-                <Setter Property="MinWidth" Value="120"/>
-                <Setter Property="Background" Value="#2196F3"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="BorderThickness" Value="0"/>
+            <!-- Minecraft-inspired Button Style -->
+            <Style x:Key="MinecraftButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="#FF999999"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="#FF373737"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="4">
-                                <ContentPresenter HorizontalAlignment="Center" 
-                                                VerticalAlignment="Center"/>
+                                    CornerRadius="3">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="6" Opacity="0.5" ShadowDepth="2" Direction="-90"/>
+                                </Border.Effect>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#1976D2"/>
+                                    <Setter Property="Background" Value="#FFAAAAAA"/>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter Property="Background" Value="#0D47A1"/>
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Background" Value="#BDBDBD"/>
+                                    <Setter Property="Background" Value="#FF888888"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -43,35 +45,67 @@
                 </Setter>
             </Style>
 
-            <Style x:Key="TabButtonStyle" TargetType="Button">
-                <Setter Property="Background" Value="#DDDDDD"/>
-                <Setter Property="Foreground" Value="Black"/>
+            <!-- Minecraft-inspired TabButton Style -->
+            <Style x:Key="MinecraftTabButtonStyle" TargetType="Button" BasedOn="{StaticResource MinecraftButtonStyle}">
+                <Setter Property="BorderThickness" Value="2,2,2,0"/>
+                <Setter Property="Width" Value="150"/>
+                <Setter Property="Height" Value="40"/>
                 <Setter Property="FontSize" Value="16"/>
-                <Setter Property="Padding" Value="20,10"/>
-                <Setter Property="BorderThickness" Value="0,0,0,2"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+
+            <!-- Minecraft-inspired ActionButton Style -->
+            <Style x:Key="ActionButtonStyle" TargetType="Button" BasedOn="{StaticResource MinecraftButtonStyle}">
+                <Setter Property="MinWidth" Value="120"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Margin" Value="8"/>
+            </Style>
+
+            <!-- Minecraft-inspired ListBox Style -->
+            <Style x:Key="MinecraftListBoxStyle" TargetType="ListBox">
+                <Setter Property="Background" Value="#FFD0D0D0"/>
+                <Setter Property="BorderBrush" Value="#FF373737"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Padding" Value="5"/>
+            </Style>
+
+            <!-- Minecraft-inspired ListBoxItem Style -->
+            <Style x:Key="MinecraftListBoxItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="Button">
+                        <ControlTemplate TargetType="ListBoxItem">
                             <Border Background="{TemplateBinding Background}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    BorderBrush="{TemplateBinding BorderBrush}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1">
+                                <ContentPresenter/>
                             </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="Goldenrod"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#EEEEEE"/>
-                    </Trigger>
-                    <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Background" Value="#CCCCCC"/>
-                        <Setter Property="BorderBrush" Value="#007ACC"/>
-                    </Trigger>
-                </Style.Triggers>
             </Style>
-            
+
+
+
+            <!-- Updated existing styles to match the Minecraft theme -->
+            <Style x:Key="TabButtonStyle" TargetType="Button" BasedOn="{StaticResource MinecraftTabButtonStyle}">
+                <Setter Property="Margin" Value="0,0,5,0"/>
+            </Style>
+
+            <Style x:Key="EvenTabButtonStyle" TargetType="Button" BasedOn="{StaticResource MinecraftTabButtonStyle}">
+                <Setter Property="Margin" Value="0,0,5,0"/>
+                <Setter Property="Background" Value="#FFD3D3D3"/>
+            </Style>
+
+            <Style x:Key="OddTabButtonStyle" TargetType="Button" BasedOn="{StaticResource MinecraftTabButtonStyle}">
+                <Setter Property="Background" Value="#FFD0D0D0"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

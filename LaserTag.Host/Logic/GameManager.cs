@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using WebSocketSharp.Server;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-using LaserTag.Host.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LaserTag.Host.Dtos;
-using System.Windows;
 using LaserTag.Host.Frame;
+using LaserTag.Host.Models;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using System.Net;
+using System.Net.Sockets;
+using System.Windows;
+using WebSocketSharp.Server;
 
 namespace LaserTag.Host.Logic
 {
@@ -20,13 +15,15 @@ namespace LaserTag.Host.Logic
     {
         #region Singleton
         private static GameManager _instance;
-        
-        private GameManager() 
+
+        private GameManager()
         {
             //InitData();
             InitDataAttribute();
             InitDataUpgrade();
             InitDataGameConfig();
+
+            InitSamplePlayer();
         }
 
         public static GameManager Instance
@@ -43,7 +40,7 @@ namespace LaserTag.Host.Logic
         #endregion
 
         #region Websocket
-        
+
         private WebSocketServer _wssv;
 
         [ObservableProperty]
@@ -97,7 +94,7 @@ namespace LaserTag.Host.Logic
 
         [ObservableProperty]
         private ObservableCollection<Player> team4Players = [];
-        
+
         [ObservableProperty]
         private ObservableCollection<Player> allPlayers = [];
 
@@ -108,7 +105,7 @@ namespace LaserTag.Host.Logic
             sourceTeam.Remove(player);
             targetTeam.Add(player);
             NotifyAllPlayerInfo("Player " + player.Name + " Move to team __");
-            
+
         }
 
         public void AddPlayer(PlayerClientSession playerClientSession)
@@ -371,7 +368,7 @@ namespace LaserTag.Host.Logic
             }
             Match = new();
             NotifyAllPlayerInfo("Match End!!");
-            
+
         }
         public void NewRound()
         {
@@ -390,7 +387,7 @@ namespace LaserTag.Host.Logic
             CurrentRound.StartTime = DateTime.Now;
             CurrentRound.Stage = RoundStage.BuyPhase;
             NotifyAllPlayerInfo("Round started!!");
-            
+
             foreach (var player in AllPlayers)
             {
                 var upgradesFrame = new HostFrameDataBuilder<ListUpgradesDTO>()
@@ -440,7 +437,7 @@ namespace LaserTag.Host.Logic
             }
             NotifyAllPlayerInfo("Round ended!!");
 
-            
+
         }
         public void PauseRound()
         {
@@ -459,7 +456,7 @@ namespace LaserTag.Host.Logic
 
         }
 
-        
+
 
         public void SendTeamCredential()
         {
@@ -594,13 +591,13 @@ namespace LaserTag.Host.Logic
         public void Test()
         {
 
-            var test1 = FindWinnerTeamOfRound();           
+            var test1 = FindWinnerTeamOfRound();
             var test2 = TeamWins;
             var test3 = FindWinnerTeamOfMatch();
             var a = 1;
         }
 
-        
+
         #endregion
 
 
@@ -618,7 +615,7 @@ namespace LaserTag.Host.Logic
                 new Config { Id = 4, Name = "Max Health", CodeName = "health_max", Value1 = "10000" },
                 new Config { Id = 5, Name = "Armor", CodeName = "armor_value", Value1 = "50" },
                 new Config { Id = 6, Name = "Initial money", CodeName = "money_init", Value1 = "100000" },
-               
+
             };
 
             // Add to the existing ObservableCollection
@@ -630,11 +627,104 @@ namespace LaserTag.Host.Logic
             // Step 2: Create a list of GameAttributes (simulated attribute definitions from the attribute table)
             var newGameAttributes = new List<GameAttribute>
             {
+
+                /*
+                    stats.damage = json["damage_value"];
+                    stats.heal = json["healing_value"];
+                    stats.maxBullet = json["bullet_max"];
+                    stats.maxSSketchBullet = json["ssketch_bullet_max"];
+                    stats.curBullet = stats.maxBullet;
+                    stats.curSSketchBullet = stats.maxSSketchBullet;
+                    stats.bulletTime = json["bullet_reload_time"];
+                    stats.sSketchBulletTime = json["ssketch_bullet_reload_time"];
+                    stats.lifeStealValue = json["life_steal_value"];
+                    stats.playerHasHeal = stats.maxSSketchBullet > 0 ? true : false;
+                    stats.playerHasSSketch = stats.heal > 0 ? true : false;
+                    stats.playerHasTrueDamage = json["has_true_damage"];
+
+                    rates.fire = json["fire_rate"];
+                    rates.poison = json["poison_rate"];
+                    rates.silence = json["silence_rate"];
+
+                    fireOrg.level = json["fire_level"];
+                    fireOrg.duration = json["fire_duration"];
+                    fireOrg.value = json["fire_value"];
+                    fireOrg.hasTrueDamage = json["fire_has_true_damage"];
+
+                    poisonOrg.level = json["poison_level"];
+                    poisonOrg.duration = json["poison_duration"];
+                    poisonOrg.value = json["poison_value"];
+
+                    deHealOrg.level = json["deheal_level"];
+                    deHealOrg.duration = json["deheal_duration"];
+                    deHealOrg.healReduction = json["deheal_heal_reduction"];
+                    deHealOrg.blockRegen = json["deheal_block_regen"];
+
+                    silenceOrg.level = json["silence_level"];
+                    silenceOrg.duration = json["silence_duration"];
+                    silenceOrg.armorDecrease = json["silence_armor_decrease"];
+
+                    exposedOrg.level = json["exposed_level"];
+                    exposedOrg.duration = json["exposed_duration"];
+                    exposedOrg.armorDecrease = json["exposed_armor_decrease"];
+                    exposedOrg.damageVulnerability = json["exposed_damage_vulnerability"];
+                 */
+
+                //Gun attributes
                 new GameAttribute { Id = 1, Name = "Damage Value", CodeName = "damage_value", IsGun = true },
-                new GameAttribute { Id = 2, Name = "Max Bullet", CodeName = "bullet_max", IsGun = true },
-                new GameAttribute { Id = 3, Name = "Fire Level", CodeName = "fire_level", IsGun = true },
-                new GameAttribute { Id = 4, Name = "Max Health", CodeName = "health_max", IsGun = false },
-                new GameAttribute { Id = 5, Name = "Armor", CodeName = "armor_value", IsGun = false }
+                new GameAttribute { Id = 2, Name = "Heal Value", CodeName = "healing_value", IsGun = true },
+                new GameAttribute { Id = 3, Name = "Max Bullet", CodeName = "bullet_max", IsGun = true },
+                new GameAttribute { Id = 4, Name = "Max SSketch Bullet", CodeName = "ssketch_bullet_max", IsGun = true },
+                new GameAttribute { Id = 5, Name = "Bullet Reload Time", CodeName = "bullet_reload_time", IsGun = true },
+                new GameAttribute { Id = 6, Name = "SSketch Bullet Reload Time", CodeName = "ssketch_bullet_reload_time", IsGun = true },
+                new GameAttribute { Id = 7, Name = "Life Steal Value", CodeName = "life_steal_value", IsGun = true },
+                new GameAttribute { Id = 8, Name = "Has True Damage", CodeName = "has_true_damage", IsGun = true },
+
+                new GameAttribute { Id = 9,  Name = "Fire Rate", CodeName = "fire_rate", IsGun = true },
+                new GameAttribute { Id = 10, Name = "Fire Level", CodeName = "fire_level", IsGun = true },
+                new GameAttribute { Id = 11, Name = "Fire Duration", CodeName = "fire_duration", IsGun = true},
+                new GameAttribute { Id = 12, Name = "Fire Value", CodeName = "fire_value", IsGun = true },
+
+                new GameAttribute { Id = 13, Name = "Poison Rate", CodeName = "poison_rate", IsGun = true },
+                new GameAttribute { Id = 14, Name = "Poison Level", CodeName = "poison_level", IsGun = true },
+                new GameAttribute { Id = 15, Name = "Poison Duration", CodeName = "poison_duration", IsGun = true },
+
+                new GameAttribute { Id = 16, Name = "Deheal Level", CodeName = "deheal_level", IsGun = true },
+                new GameAttribute { Id = 17, Name = "Deheal Duration", CodeName = "deheal_duration", IsGun = true },
+                new GameAttribute { Id = 18, Name = "Deheal Heal Reduction", CodeName = "deheal_heal_reduction", IsGun = true },
+                new GameAttribute { Id = 19, Name = "Deheal Block Regen", CodeName = "deheal_block_regen", IsGun = true },
+
+                new GameAttribute { Id = 20, Name = "Silence Rate", CodeName = "silence_rate", IsGun = true },
+                new GameAttribute { Id = 21, Name = "Silence Level", CodeName = "silence_level", IsGun = true },
+                new GameAttribute { Id = 22, Name = "Silence Duration", CodeName = "silence_duration", IsGun = true },
+                new GameAttribute { Id = 23, Name = "Silence Armor Decrease", CodeName = "silence_armor_decrease", IsGun = true },
+
+
+                /*
+                    vestStatPacket.header.type = CommonStructs::MessageType::VestStatPacket;
+                    vestStatPacket.health = json["health_max"];
+                    vestStatPacket.armor = json["armor_max"];
+                    vestStatPacket.maxHealth = json["health_max"];
+                    vestStatPacket.maxArmor = json["armor_max"];
+                    vestStatPacket.armorIncrease = json["armor_plus"];
+                    vestStatPacket.armorDecrease = json["armor_minus"];
+                    vestStatPacket.extraDamageRecv = json["extra_damage_receive"];
+                    vestStatPacket.baseDamageVulnerability = json["base_damage_vul"];
+                    vestStatPacket.baseDamageResistance = json["base_damage_res"];
+                    vestStatPacket.bonusDamageVulnerability = json["bonus_damage_vul"];
+                    vestStatPacket.bonusDamageResistance = json["bonus_damage_res"];
+                 */
+
+                //Vest attributes
+                new GameAttribute { Id = 50, Name = "Max Health", CodeName = "health_max", IsGun = false },
+                new GameAttribute { Id = 51, Name = "Max Armor", CodeName = "armor_max", IsGun = false },
+                new GameAttribute { Id = 52, Name = "Armor Plus", CodeName = "armor_plus", IsGun = false },
+                new GameAttribute { Id = 53, Name = "Armor Minus", CodeName = "armor_minus", IsGun = false },
+                new GameAttribute { Id = 54, Name = "Extra Damage Receive", CodeName = "extra_damage_receive", IsGun = false },
+                new GameAttribute { Id = 55, Name = "Base Damage Vulnerability", CodeName = "base_damage_vul", IsGun = false },
+                new GameAttribute { Id = 56, Name = "Base Damage Resistance", CodeName = "base_damage_res", IsGun = false },
+                new GameAttribute { Id = 57, Name = "Bonus Damage Vulnerability", CodeName = "bonus_damage_vul", IsGun = false },
+                new GameAttribute { Id = 58, Name = "Bonus Damage Resistance", CodeName = "bonus_damage_res", IsGun = false },
             };
 
             // Add to the existing ObservableCollection
@@ -664,23 +754,45 @@ namespace LaserTag.Host.Logic
                     Cost = 400,
                     Description = "Increases defense attributes.",
                     Attributes = new List<UpgradeAttribute>()
-                }
+                },
+                new Upgrade
+                {
+                    Id = 3,
+                    Name = "Fire plus",
+                    Cost = 400,
+                    Description = "Increases Fire attributes.",
+                    Attributes = new List<UpgradeAttribute>()
+                },
             };
-            
+
 
             var upgradeAttributes = new List<UpgradeAttribute>
             {
-                new UpgradeAttribute (1, newUpgrades[0], GameAttributes[0], 10), // Attack plus - Damage Value
-                new UpgradeAttribute (2, newUpgrades[0], GameAttributes[1], 5), // Attack plus - Max Bullet                 
-                new UpgradeAttribute (3, newUpgrades[1], GameAttributes[3], 50), // Defense plus - Max Health            
-                new UpgradeAttribute (4, newUpgrades[1], GameAttributes[4], 50) // Defense plus - Armor
+                new UpgradeAttribute (1, newUpgrades[0], GameAttributes[0], 10),        // Attack plus - Damage Value
+                new UpgradeAttribute (2, newUpgrades[0], GameAttributes[1], 5),         // Attack plus - Max Bullet
+
+                new UpgradeAttribute (3, newUpgrades[1], GameAttributes[23], 50),        // Defense plus - Max Health            
+                new UpgradeAttribute (4, newUpgrades[1], GameAttributes[24], 50),        // Defense plus - Armor
+
+                new UpgradeAttribute (5, newUpgrades[2], GameAttributes[8], 100),       // Fire plus - Fire Rate
+                new UpgradeAttribute (6, newUpgrades[2], GameAttributes[9], 1),        // Fire plus - Fire Level
+                new UpgradeAttribute (7, newUpgrades[2], GameAttributes[10], 10),       // Fire plus - Fire Value
+                new UpgradeAttribute (8, newUpgrades[2], GameAttributes[11], 5),        // Fire plus - Fire Duration
+
             };
 
             // Associate UpgradeAttributes with their corresponding Upgrades
             newUpgrades[0].Attributes.Add(upgradeAttributes[0]); // Attack plus - Damage Value
             newUpgrades[0].Attributes.Add(upgradeAttributes[1]); // Attack plus - Max Bullet
+
             newUpgrades[1].Attributes.Add(upgradeAttributes[2]); // Defense plus - Max Health
             newUpgrades[1].Attributes.Add(upgradeAttributes[3]); // Defense plus - Armor
+
+            newUpgrades[2].Attributes.Add(upgradeAttributes[4]); // Fire plus - Fire Rate
+            newUpgrades[2].Attributes.Add(upgradeAttributes[5]); // Fire plus - Fire Level
+            newUpgrades[2].Attributes.Add(upgradeAttributes[6]); // Fire plus - Fire Value
+            newUpgrades[2].Attributes.Add(upgradeAttributes[7]); // Fire plus - Fire Duration
+
 
             // Set the Upgrade reference for each UpgradeAttribute
             foreach (var upgrade in newUpgrades)
@@ -710,7 +822,20 @@ namespace LaserTag.Host.Logic
             }
         }
 
-        
+        public void InitSamplePlayer()
+        {
+            Player player = new Player();
+            player.Id = 1;
+            player.Name = "Player 1";
+            player.MacGun = "00:00:00:00:00:01";
+            player.MacVest = "00:00:00:00:00:02";
+            player.Credit = 1000;
+            Team1Players.Add(player);
+            AllPlayers.Add(player);
+
+        }
+
+
         #endregion
     }
 }

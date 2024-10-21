@@ -8,9 +8,9 @@
         d:DataContext="{d:DesignInstance Type=logic:GameManager}"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowStyle="SingleBorderWindow"
         Height="600" 
         Width="800" 
+        Background="#FF333333"
         KeyDown="MainWindow_KeyDown">
 
     <Grid>
@@ -23,74 +23,59 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Tab-like buttons at the top -->
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="MatchButton" Grid.Column="0" Content="Match" Click="MatchButton_Click" Style="{StaticResource TabButtonStyle}"/>
-            <Button x:Name="GameProgressButton" Grid.Column="1" Content="Game Progress" Click="GameProgressButton_Click" Style="{StaticResource TabButtonStyle}"/>
-        </Grid>
+        <Border Grid.RowSpan="2" Grid.ColumnSpan="2" CornerRadius="5" Background="#FFC6C6C6" Margin="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <!-- Main content area -->
-        <Frame x:Name="MainFrame" Grid.Row="1" Grid.Column="0" NavigationUIVisibility="Hidden"/>
+                <!-- Tab Buttons -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="5,5,5,0">
+                    <StackPanel.Resources>
+                        <Style x:Key="EvenTabButtonStyle" TargetType="Button" BasedOn="{StaticResource MinecraftButtonStyle}">
+                            <Setter Property="Width" Value="150"/>
+                            <Setter Property="Height" Value="40"/>
+                            <Setter Property="Margin" Value="0,0,5,0"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Style>
+                    </StackPanel.Resources>
 
-        <!-- Right side panel -->
-        <Grid Grid.Row="1" Grid.Column="1">
+                    <!-- Example Tab Buttons -->
+                    <Button x:Name="MatchButton" Content="Match" Click="MatchButton_Click" Style="{StaticResource EvenTabButtonStyle}"/>
+                    <Button x:Name="GameProgressButton" Content="Game Progress" Click="GameProgressButton_Click" Style="{StaticResource EvenTabButtonStyle}"/>
+                </StackPanel>
 
-            <Grid.RowDefinitions>
+                <!-- Main content area (with more depth using shadow and light background) -->
+                <Border Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" CornerRadius="5" Margin="5" BorderBrush="LightSlateGray" Background="#FFF3F3F3">
+                    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="Transparent"/>
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" Opacity="0.2" ShadowDepth="4"/>
+                    </Border.Effect>
+                </Border>
 
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-
-                <RowDefinition Height="*"/>
-
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0" Text="{Binding IpAddress}" FontSize="18" Margin="10"/>
-
-            <Button Grid.Row="1" Content="Wifi Connect" Click="WifiConnect_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-
-            <Button Grid.Row="2" Content="New Match" Click="NewMatch_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-
-            <Button Grid.Row="3" Content="Start Match" Click="StartMatch_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            
-            <Button Grid.Row="4" Content="End Match" Click="EndMatch_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            
-            <Button Grid.Row="5" Content="New Round" Click="NewRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-            
-            <Button Grid.Row="6" Content="Start Round" Click="StartRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-
-            <Button Grid.Row="7" Content="Battle phase" Click="BattlePhase_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-
-            <Button Grid.Row="8" Content="End Round" Click="EndRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-
-            <Button Grid.Row="9" Content="Pause Round" Click="PauseRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-
-            <Button Grid.Row="10" Content="Resume Round" Click="ResumeRound_Click" Margin="10" Style="{StaticResource ActionButtonStyle}"/>
-
-            
-
-        </Grid>
+                <!-- Right side control buttons (maintain Minecraft style) -->
+                <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="5">
+                    <TextBlock Text="{Binding IpAddress}" FontSize="18" Margin="0,0,0,5" Foreground="White"/>
+                    <Button Content="Wifi Connect" Click="WifiConnect_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="New Match" Click="NewMatch_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="Start Match" Click="StartMatch_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="End Match" Click="EndMatch_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="New Round" Click="NewRound_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="Start Round" Click="StartRound_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="Battle phase" Click="BattlePhase_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="End Round" Click="EndRound_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="Pause Round" Click="PauseRound_Click" Style="{StaticResource ActionButtonStyle}"/>
+                    <Button Content="Resume Round" Click="ResumeRound_Click" Style="{StaticResource ActionButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
-
-    
 </Window>
