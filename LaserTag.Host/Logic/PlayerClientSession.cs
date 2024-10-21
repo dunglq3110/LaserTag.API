@@ -21,9 +21,8 @@ namespace LaserTag.Host.Logic
         
         protected override void OnClose(CloseEventArgs e)
         {
-            GameManager gameManager = GameManager.Instance;
-            gameManager.AllPlayers.Remove(Player);
-            gameManager.PlayerClients.Remove(ID);
+            GameManager.Instance.NotifyAllPlayerInfo($"Player: {Player.Name} Disconected");
+            GameManager.Instance.RemovePlayer(Player);
             base.OnClose(e);
         }
 

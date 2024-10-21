@@ -23,7 +23,7 @@ namespace LaserTag.Host.Logic
             InitDataUpgrade();
             InitDataGameConfig();
 
-            InitSamplePlayer();
+            //InitSamplePlayer();
         }
 
         public static GameManager Instance
@@ -124,10 +124,26 @@ namespace LaserTag.Host.Logic
 
         public void RemovePlayer(Player player)
         {
-            AllPlayers.Remove(player);
-            PlayerClients.Remove(player.ConnectionId);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                AllPlayers.Remove(player);
+                PlayerClients.Remove(player.ConnectionId);
+                // Remove from corresponding team
+                Team1Players.Remove(player);
+                Team2Players.Remove(player);
+                Team3Players.Remove(player);
+                Team4Players.Remove(player);
+            });
+            
         }
-
+        public int GetPlayerTeam(Player player)
+        {
+            if (Team1Players.Contains(player)) return 1;
+            if (Team2Players.Contains(player)) return 2;
+            if (Team3Players.Contains(player)) return 3;
+            if (Team4Players.Contains(player)) return 4;
+            return -1; // Player not found in any team
+        }
         public void NotifyAllPlayer(string data)
         {
             foreach (var playerClient in PlayerClients)
@@ -285,20 +301,35 @@ namespace LaserTag.Host.Logic
         {
             foreach (var player in AllPlayers)
             {
-                var attributesData = new Dictionary<string, int>();
+                var gunAttributes = new Dictionary<string, int>();
+                var vestAttributes = new Dictionary<string, int>();
 
-                // Populate the dictionary with the player's attributes
+                // Populate the dictionaries based on IsGun property
                 foreach (var attribute in player.PlayerAttributes)
                 {
-                    attributesData[attribute.GameAttribute.CodeName] = attribute.Value;
+                    if (attribute.GameAttribute.IsGun)
+                    {
+                        gunAttributes[attribute.GameAttribute.CodeName] = attribute.Value;
+                    }
+                    else
+                    {
+                        vestAttributes[attribute.GameAttribute.CodeName] = attribute.Value;
+                    }
                 }
 
+                // Create the final structure
+                var playerAttributesData = new PlayerAttributesResponse
+                {
+                    ForGun = gunAttributes,
+                    ForVest = vestAttributes
+                };
+
                 // Create the HostFrameData using the builder
-                var attributesFrame = new HostFrameDataBuilder<Dictionary<string, int>>()
-                    .SetActionCode(HostActionCode.SendPlayerAttributes) // Assuming 23 is the correct enum value
+                var attributesFrame = new HostFrameDataBuilder<PlayerAttributesResponse>()
+                    .SetActionCode(HostActionCode.SendPlayerAttributes)
                     .SetMessageType(MessageType.Info)
                     .SetMessage("Player attributes!!")
-                    .SetData(attributesData)
+                    .SetData(playerAttributesData)
                     .Build();
 
                 // Serialize and send the data to the player
@@ -600,8 +631,6 @@ namespace LaserTag.Host.Logic
 
         #endregion
 
-
-
         #region InitData
         public void InitDataAttribute()
         {
@@ -627,48 +656,6 @@ namespace LaserTag.Host.Logic
             // Step 2: Create a list of GameAttributes (simulated attribute definitions from the attribute table)
             var newGameAttributes = new List<GameAttribute>
             {
-
-                /*
-                    stats.damage = json["damage_value"];
-                    stats.heal = json["healing_value"];
-                    stats.maxBullet = json["bullet_max"];
-                    stats.maxSSketchBullet = json["ssketch_bullet_max"];
-                    stats.curBullet = stats.maxBullet;
-                    stats.curSSketchBullet = stats.maxSSketchBullet;
-                    stats.bulletTime = json["bullet_reload_time"];
-                    stats.sSketchBulletTime = json["ssketch_bullet_reload_time"];
-                    stats.lifeStealValue = json["life_steal_value"];
-                    stats.playerHasHeal = stats.maxSSketchBullet > 0 ? true : false;
-                    stats.playerHasSSketch = stats.heal > 0 ? true : false;
-                    stats.playerHasTrueDamage = json["has_true_damage"];
-
-                    rates.fire = json["fire_rate"];
-                    rates.poison = json["poison_rate"];
-                    rates.silence = json["silence_rate"];
-
-                    fireOrg.level = json["fire_level"];
-                    fireOrg.duration = json["fire_duration"];
-                    fireOrg.value = json["fire_value"];
-                    fireOrg.hasTrueDamage = json["fire_has_true_damage"];
-
-                    poisonOrg.level = json["poison_level"];
-                    poisonOrg.duration = json["poison_duration"];
-                    poisonOrg.value = json["poison_value"];
-
-                    deHealOrg.level = json["deheal_level"];
-                    deHealOrg.duration = json["deheal_duration"];
-                    deHealOrg.healReduction = json["deheal_heal_reduction"];
-                    deHealOrg.blockRegen = json["deheal_block_regen"];
-
-                    silenceOrg.level = json["silence_level"];
-                    silenceOrg.duration = json["silence_duration"];
-                    silenceOrg.armorDecrease = json["silence_armor_decrease"];
-
-                    exposedOrg.level = json["exposed_level"];
-                    exposedOrg.duration = json["exposed_duration"];
-                    exposedOrg.armorDecrease = json["exposed_armor_decrease"];
-                    exposedOrg.damageVulnerability = json["exposed_damage_vulnerability"];
-                 */
 
                 //Gun attributes
                 new GameAttribute { Id = 1, Name = "Damage Value", CodeName = "damage_value", IsGun = true },
@@ -700,22 +687,6 @@ namespace LaserTag.Host.Logic
                 new GameAttribute { Id = 21, Name = "Silence Level", CodeName = "silence_level", IsGun = true },
                 new GameAttribute { Id = 22, Name = "Silence Duration", CodeName = "silence_duration", IsGun = true },
                 new GameAttribute { Id = 23, Name = "Silence Armor Decrease", CodeName = "silence_armor_decrease", IsGun = true },
-
-
-                /*
-                    vestStatPacket.header.type = CommonStructs::MessageType::VestStatPacket;
-                    vestStatPacket.health = json["health_max"];
-                    vestStatPacket.armor = json["armor_max"];
-                    vestStatPacket.maxHealth = json["health_max"];
-                    vestStatPacket.maxArmor = json["armor_max"];
-                    vestStatPacket.armorIncrease = json["armor_plus"];
-                    vestStatPacket.armorDecrease = json["armor_minus"];
-                    vestStatPacket.extraDamageRecv = json["extra_damage_receive"];
-                    vestStatPacket.baseDamageVulnerability = json["base_damage_vul"];
-                    vestStatPacket.baseDamageResistance = json["base_damage_res"];
-                    vestStatPacket.bonusDamageVulnerability = json["bonus_damage_vul"];
-                    vestStatPacket.bonusDamageResistance = json["bonus_damage_res"];
-                 */
 
                 //Vest attributes
                 new GameAttribute { Id = 50, Name = "Max Health", CodeName = "health_max", IsGun = false },
