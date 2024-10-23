@@ -41,6 +41,7 @@ namespace LaserTag.Host.Models
         private int credit = 100000000;
     
         public List<PlayerAttribute> PlayerAttributes { get; set; } = new List<PlayerAttribute>();
+        public List<Upgrade> Upgrades { get; set; } = new List<Upgrade>();
 
         // Add an attribute to the player
 

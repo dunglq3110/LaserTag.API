@@ -235,7 +235,8 @@ namespace LaserTag.Host.Logic
                     playerUpgradeCache[playerId][attribute.GameAttribute.CodeName] = 0;
                 }
                 playerUpgradeCache[playerId][attribute.GameAttribute.CodeName] += attribute.Value;
-            }
+            };
+            player.Upgrades.Add(upgrade);
         }
 
         public void AssignPlayerAttributeAfterUpgrades()
@@ -420,16 +421,12 @@ namespace LaserTag.Host.Logic
             NotifyAllPlayerInfo("Round started!!");
 
             foreach (var player in AllPlayers)
-            {
+            {                
                 var upgradesFrame = new HostFrameDataBuilder<ListUpgradesDTO>()
                        .SetActionCode(HostActionCode.SendUpgradesData)
                        .SetMessageType(MessageType.Info)
                        .SetMessage("Equipment upgrades!!")
-                       .SetData(new ListUpgradesDTO
-                       {
-                           Credit = player.Credit,
-                           Upgrades = Upgrades.ToList()
-                       })
+                       .SetData(new ListUpgradesDTO(player, Upgrades.ToList()))
                        .Build();
                 PlayerClients[player.ConnectionId].SendData(JsonConvert.SerializeObject(upgradesFrame, Formatting.Indented));
             }
@@ -622,9 +619,7 @@ namespace LaserTag.Host.Logic
         public void Test()
         {
 
-            var test1 = FindWinnerTeamOfRound();
-            var test2 = TeamWins;
-            var test3 = FindWinnerTeamOfMatch();
+            var test1 = playerUpgradeCache;
             var a = 1;
         }
 

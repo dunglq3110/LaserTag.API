@@ -237,6 +237,14 @@ namespace LaserTag.Host.Logic
             Player player = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == bulletReport.id);
             player.CurrentBullet = bulletReport.normalBullets;
             player.CurrentSSketchBullet = bulletReport.ssketchBullets;
+            ShootLog shootLog = new ShootLog
+            {
+                Id = gmInstance.ShootLogs.Count(),
+                Shooter = player,
+                Round = gmInstance.CurrentRound,
+                Time = DateTime.Now,
+            };
+            gmInstance.ShootLogs.Add(shootLog);
         }
 
         private void HandleDamageReport(byte[] buffer)
@@ -249,6 +257,7 @@ namespace LaserTag.Host.Logic
             {
                 HitLog hitLog = new HitLog
                 {
+                    Id = GameManager.Instance.HitLogs.Count(),
                     Shooter = shooter,
                     Target = target,
                     Round = gmInstance.CurrentRound,

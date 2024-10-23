@@ -24,5 +24,11 @@ namespace LaserTag.TestGun
             // You can add your connection logic here
             GameManager.Instance.SendSubmitMac();
         }
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            // You can add your connection logic here
+            GameManager.Instance.SendGunLog();
+        }
+        
     }
 }

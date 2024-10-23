@@ -54,7 +54,11 @@ namespace LaserTag.TestGun
 
         [ObservableProperty]
         private string resultText = "";
+
         public PlayerClientSession PlayerClient;
+
+        [ObservableProperty]
+        private string gunLog = "";
         public void StartWebSocketServer()
         {
             try
@@ -63,7 +67,7 @@ namespace LaserTag.TestGun
                 if (_wssv == null)
                 {
                     IpAddress = GetLocalIPv4();
-                    _wssv = new WebSocketServer($"ws://{IpAddress}:8081");
+                    _wssv = new WebSocketServer($"ws://{IpAddress}:1234");
                     _wssv.AddWebSocketService<PlayerClientSession>("/LaserTag");
                     _wssv.Start();
                 }
@@ -105,6 +109,10 @@ namespace LaserTag.TestGun
 
             // Send the JSON string using PlayerClient.SendData
             PlayerClient.SendData(jsonString);
+        }
+        public void SendGunLog()
+        {
+            PlayerClient.SendData(GunLog);
         }
 
     }
