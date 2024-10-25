@@ -18,18 +18,18 @@
                         <ControlTemplate TargetType="Button">
                             <Grid Margin="0,0,5,0">
                                 <Border x:Name="outerBorder" 
-                                        CornerRadius="5" 
-                                        Background="LightGray" 
-                                        BorderBrush="LightSlateGray" 
-                                        BorderThickness="2">
+                                        CornerRadius="0" 
+                                        Background="#EAD8B1" 
+                                        BorderBrush="#948979" 
+                                        BorderThickness="3">
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                                     </Border.Effect>
                                 </Border>
                                 <Border x:Name="innerBorder"
-                                        CornerRadius="3"
+                                        CornerRadius="0"
                                         Background="Transparent"
-                                        BorderThickness="0"
+                                        BorderThickness="3"
                                         Margin="2">
                                     <ContentPresenter HorizontalAlignment="Center" 
                                                     VerticalAlignment="Center"/>
@@ -43,33 +43,34 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="Width" Value="150"/>
+                <Setter Property="Width" Value="180"/>
                 <Setter Property="Height" Value="40"/>
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Margin" Value="0,0,5,0"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="#001F3F"/>
+                <Setter Property="FontFamily" Value="Arial"/>
             </Style>
 
-            <!-- Global Button style -->
             <Style x:Key="RightSideCurvedButtonStyle" TargetType="Button">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Grid Margin="0,0,5,0">
                                 <Border x:Name="outerBorder" 
-                                        CornerRadius="5" 
-                                        Background="LightGray" 
-                                        BorderBrush="LightSlateGray" 
-                                        BorderThickness="2">
+                                        CornerRadius="0" 
+                                        Background="#EAD8B1" 
+                                        BorderBrush="#948979" 
+                                        BorderThickness="3">
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                                     </Border.Effect>
                                 </Border>
                                 <Border x:Name="innerBorder"
-                                        CornerRadius="3"
+                                        CornerRadius="0"
                                         Background="Transparent"
-                                        BorderThickness="0"
-                                        Margin="2">
+                                        BorderThickness="3"
+                                        Margin="0">
                                     <ContentPresenter 
                                         HorizontalAlignment="Center" 
                                         VerticalAlignment="Center"/>
@@ -85,21 +86,21 @@
                 </Setter>
                 <Setter Property="Width" Value="190"/>
                 <Setter Property="Height" Value="40"/>
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
                 <Setter Property="Margin" Value="15,0,10,10"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="Foreground" Value="#001F3F"/>
             </Style>
 
-            <!-- Minecraft-inspired ListBox Style -->
-            <Style x:Key="MinecraftListBoxStyle" TargetType="ListBox">
+            <Style x:Key="ListBoxStyle" TargetType="ListBox">
                 <Setter Property="Background" Value="#FFD0D0D0"/>
                 <Setter Property="BorderBrush" Value="#FF373737"/>
                 <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="Padding" Value="5"/>
             </Style>
 
-            <!-- Minecraft-inspired ListBoxItem Style -->
-            <Style x:Key="MinecraftListBoxItemStyle" TargetType="ListBoxItem">
+            <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Template">
                     <Setter.Value>
@@ -111,7 +112,7 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="Goldenrod"/>
+                                    <Setter Property="Background" Value="Aqua"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

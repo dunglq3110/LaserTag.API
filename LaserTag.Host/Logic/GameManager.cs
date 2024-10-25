@@ -123,8 +123,17 @@ namespace LaserTag.Host.Logic
 
         public void RemovePlayer(Player player)
         {
-            AllPlayers.Remove(player);
-            PlayerClients.Remove(player.ConnectionId);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                AllPlayers.Remove(player);
+                PlayerClients.Remove(player.ConnectionId);
+                // Remove from corresponding team
+                Team1Players.Remove(player);
+                Team2Players.Remove(player);
+                Team3Players.Remove(player);
+                Team4Players.Remove(player);
+            });
+            
         }
 
         public void NotifyAllPlayer(string data)

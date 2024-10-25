@@ -20,17 +20,17 @@
 
         <Grid.Resources>
             <Style x:Key="TeamListViewStyle" TargetType="ListView">
-                <Setter Property="ItemContainerStyle" Value="{StaticResource MinecraftListBoxItemStyle}"/>
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemStyle}"/>
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
             </Style>
 
             <Style x:Key="PlayerBorderStyle" TargetType="Border">
                 <Setter Property="BorderBrush" Value="#FF373737"/>
-                <Setter Property="BorderThickness" Value="3"/>
-                <Setter Property="CornerRadius" Value="2"/>
+                <Setter Property="BorderThickness" Value="4"/>
+                <Setter Property="CornerRadius" Value="0"/>
                 <Setter Property="Background" Value="#8B8B8B"/>
-                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Margin" Value="4"/>
                 <Setter Property="Padding" Value="5"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
@@ -53,9 +53,9 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Margin="15, 15, 15, 10" CornerRadius="3" Background="#FFEBEE" BorderThickness="2" BorderBrush="#FFCDD2">
+                <Border Grid.Row="0" Margin="15, 15, 15, 10" CornerRadius="0" Background="#821131" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
-                        <DropShadowEffect Color="#FFCDD2" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
+                        <DropShadowEffect Color="#C7253E" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
                     <TextBlock 
                         Text="{Binding TeamWins[0], StringFormat='Team 1 Wins: {0}'}" 
@@ -63,12 +63,13 @@
                         VerticalAlignment="Center"
                         FontWeight="Bold" 
                         FontSize="25" 
+                        FontFamily="Arial"
                         Margin="0,5,0,5"
                         DockPanel.Dock="Top"
-                        Foreground="Black"/>
+                        Foreground="#DFD0B8"/>
                 </Border>
 
-                <Border Grid.Row="1" Margin="15, 0, 15, 15" Background="#FFEBEE" CornerRadius="3" BorderThickness="2" BorderBrush="#FFCDD2">
+                <Border Grid.Row="1" Margin="15, 0, 15, 15" Background="#821131" CornerRadius="0" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
                         <DropShadowEffect Color="#FFCDD2" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
@@ -78,19 +79,20 @@
                         Style="{StaticResource TeamListViewStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#34495E" Padding="8" Background="#EF9A9A">
-                                    <Grid>
-                                        <Grid.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Details" Click="PlayerDetails_Click"/>
-                                                <MenuItem Header="Move to team">
-                                                    <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
-                                                    <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
-                                                    <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
-                                                </MenuItem>
-                                            </ContextMenu>
-                                        </Grid.ContextMenu>
+                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#DFD0B8" Padding="8" Background="#C7253E">
 
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                            <MenuItem Header="Move to team">
+                                                <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
+                                                <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
+                                                <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+
+                                    <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
@@ -104,37 +106,37 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Text="{Binding Name}" 
-                                                   FontWeight="Bold" 
-                                                   FontSize="14" 
+                                                   FontWeight="UltraBold" 
+                                                   FontSize="15" 
                                                    Grid.ColumnSpan="2"
                                                    Margin="0,0,0,5"
-                                                   Foreground="Black"
+                                                   Foreground="#DFD0B8"
                                                    Style="{StaticResource PlayerTextBlockStyle}"/>
 
                                         <StackPanel Grid.Row="1" Grid.Column="0">
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="Health: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentHealth}" Foreground="Black"/>
+                                                <Run Text="Health: " FontWeight="SemiBold" Foreground="#DFD0B8"/>
+                                                <Run Text="{Binding CurrentHealth}" Foreground="#DFD0B8"/>
                                             </TextBlock>
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="Armor: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentArmor}" Foreground="Black"/>
+                                                <Run Text="Armor: " FontWeight="SemiBold" Foreground="#DFD0B8"/>
+                                                <Run Text="{Binding CurrentArmor}" Foreground="#DFD0B8"/>
                                             </TextBlock>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="2" Margin="10,0,0,0">
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="Bullets: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentBullet}" Foreground="Black"/>
+                                                <Run Text="Bullets: " FontWeight="SemiBold" Foreground="#DFD0B8"/>
+                                                <Run Text="{Binding CurrentBullet}" Foreground="#DFD0B8"/>
                                             </TextBlock>
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="SSketch: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentSSketchBullet}" Foreground="Black"/>
+                                                <Run Text="SSketch: " FontWeight="SemiBold" Foreground="#DFD0B8"/>
+                                                <Run Text="{Binding CurrentSSketchBullet}" Foreground="#DFD0B8"/>
                                             </TextBlock>
                                         </StackPanel>
 
                                         <Border Grid.Row="2" Grid.ColumnSpan="4" 
-                                                Background="#3F000000" 
+                                                Background="#DFD0B8" 
                                                 Height="1" 
                                                 Margin="0,5,0,0"/>
                                     </Grid>
@@ -153,7 +155,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Margin="0, 15, 15, 10" CornerRadius="3" Background="#E3F2FD" BorderThickness="2" BorderBrush="#BBDEFB">
+                <Border Grid.Row="0" Margin="0, 15, 15, 10" CornerRadius="0" Background="#03346E" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
                         <DropShadowEffect Color="#BBDEFB" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
@@ -163,12 +165,13 @@
                         VerticalAlignment="Center"
                         FontWeight="Bold" 
                         FontSize="25" 
+                        FontFamily="Arial"
                         Margin="0,5,0,5"
                         DockPanel.Dock="Top"
-                        Foreground="Black"/>
+                        Foreground="#DFD0B8"/>
                 </Border>
 
-                <Border Grid.Row="1" CornerRadius="3" Grid.Column="2" Margin="0, 0, 15, 15" Background="#E3F2FD" BorderThickness="2" BorderBrush="#BBDEFB">
+                <Border Grid.Row="1" CornerRadius="0" Grid.Column="2" Margin="0, 0, 15, 15" Background="#03346E" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
                         <DropShadowEffect Color="#BBDEFB" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
@@ -179,19 +182,20 @@
                         Style="{StaticResource TeamListViewStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#34495E" Padding="8" Background="#90CAF9">
-                                    <Grid>
-                                        <Grid.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Details" Click="PlayerDetails_Click"/>
-                                                <MenuItem Header="Move to team">
-                                                    <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
-                                                    <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
-                                                    <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
-                                                </MenuItem>
-                                            </ContextMenu>
-                                        </Grid.ContextMenu>
+                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#DFD0B8" Padding="8" Background="#4682A9">
 
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                            <MenuItem Header="Move to team">
+                                                <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
+                                                <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
+                                                <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+
+                                    <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
@@ -205,37 +209,37 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Text="{Binding Name}" 
-                                                   FontWeight="Bold" 
-                                                   FontSize="14" 
+                                                   FontWeight="UltraBold" 
+                                                   FontSize="15" 
                                                    Grid.ColumnSpan="2"
                                                    Margin="0,0,0,5"
-                                                   Foreground="Black"
+                                                   Foreground="#000000"
                                                    Style="{StaticResource PlayerTextBlockStyle}"/>
 
                                         <StackPanel Grid.Row="1" Grid.Column="0">
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="Health: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentHealth}" Foreground="Black"/>
+                                                <Run Text="Health: " FontWeight="SemiBold" Foreground="#000000"/>
+                                                <Run Text="{Binding CurrentHealth}" Foreground="#000000"/>
                                             </TextBlock>
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="Armor: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentArmor}" Foreground="Black"/>
+                                                <Run Text="Armor: " FontWeight="SemiBold" Foreground="#000000"/>
+                                                <Run Text="{Binding CurrentArmor}" Foreground="#000000"/>
                                             </TextBlock>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1" Grid.Column="2" Margin="10,0,0,0">
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="Bullets: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentBullet}" Foreground="Black"/>
+                                                <Run Text="Bullets: " FontWeight="SemiBold" Foreground="#000000"/>
+                                                <Run Text="{Binding CurrentBullet}" Foreground="#000000"/>
                                             </TextBlock>
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <Run Text="SSketch: " FontWeight="SemiBold" Foreground="Black"/>
-                                                <Run Text="{Binding CurrentSSketchBullet}" Foreground="Black"/>
+                                                <Run Text="SSketch: " FontWeight="SemiBold" Foreground="#000000"/>
+                                                <Run Text="{Binding CurrentSSketchBullet}" Foreground="#000000"/>
                                             </TextBlock>
                                         </StackPanel>
 
                                         <Border Grid.Row="2" Grid.ColumnSpan="4" 
-                                                Background="#3F000000" 
+                                                Background="#000000" 
                                                 Height="1" 
                                                 Margin="0,5,0,0"/>
                                     </Grid>
@@ -255,7 +259,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Margin="0, 15, 15, 10" CornerRadius="3" Background="#E8F5E9" BorderThickness="2" BorderBrush="#C8E6C9">
+                <Border Grid.Row="0" Margin="0, 15, 15, 10" CornerRadius="0" Background="#347928" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
                         <DropShadowEffect Color="#C8E6C9" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
@@ -265,12 +269,13 @@
                         VerticalAlignment="Center"
                         FontWeight="Bold" 
                         FontSize="25" 
+                        FontFamily="Arial"
                         Margin="0,5,0,5"
                         DockPanel.Dock="Top"
-                        Foreground="Black"/>
+                        Foreground="#DFD0B8"/>
                 </Border>
 
-                <Border Grid.Row="1" CornerRadius="3" Grid.Column="2" Margin="0, 0, 15, 15" Background="#E8F5E9" BorderThickness="2" BorderBrush="#C8E6C9">
+                <Border Grid.Row="1" CornerRadius="0" Grid.Column="2" Margin="0, 0, 15, 15" Background="#347928" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
                         <DropShadowEffect Color="#C8E6C9" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
@@ -281,19 +286,20 @@
                     Style="{StaticResource TeamListViewStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#34495E" Padding="8" Background="#A5D6A7">
-                                    <Grid>
-                                        <Grid.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Details" Click="PlayerDetails_Click"/>
-                                                <MenuItem Header="Move to team">
-                                                    <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
-                                                    <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
-                                                    <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
-                                                </MenuItem>
-                                            </ContextMenu>
-                                        </Grid.ContextMenu>
+                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#DFD0B8" Padding="8" Background="#859F3D">
 
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                            <MenuItem Header="Move to team">
+                                                <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
+                                                <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
+                                                <MenuItem Header="Team 4" Click="MoveToTeam4_Click"/>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+
+                                    <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
@@ -307,8 +313,8 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Text="{Binding Name}" 
-                                                   FontWeight="Bold" 
-                                                   FontSize="14" 
+                                                   FontWeight="UltraBold" 
+                                                   FontSize="15" 
                                                    Grid.ColumnSpan="2"
                                                    Margin="0,0,0,5"
                                                    Foreground="Black"
@@ -357,7 +363,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Margin="0, 15, 15, 10" CornerRadius="3" Background="#FFF3E0" BorderThickness="2" BorderBrush="#FFE0B2">
+                <Border Grid.Row="0" Margin="0, 15, 15, 10" CornerRadius="0" Background="#FEC260" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
                         <DropShadowEffect Color="#FFE0B2" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
@@ -367,12 +373,13 @@
                         VerticalAlignment="Center"
                         FontWeight="Bold" 
                         FontSize="25" 
+                        FontFamily="Arial"
                         Margin="0,5,0,5"
                         DockPanel.Dock="Top"
                         Foreground="Black"/>
                 </Border>
 
-                <Border Grid.Row="1" CornerRadius="3" Grid.Column="2" Margin="0, 0, 15, 15" Background="#FFF3E0" BorderThickness="2" BorderBrush="#FFE0B2">
+                <Border Grid.Row="1" CornerRadius="0" Grid.Column="2" Margin="0, 0, 15, 15" Background="#FEC260" BorderThickness="3" BorderBrush="#DFD0B8">
                     <Border.Effect>
                         <DropShadowEffect Color="#FFE0B2" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
                     </Border.Effect>
@@ -383,19 +390,18 @@
                         Style="{StaticResource TeamListViewStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#34495E" Padding="8" Background="#FFCC80">
+                                <Border Style="{StaticResource PlayerBorderStyle}" BorderBrush="#D49B54" Padding="8" Background="#DFD0B8">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Details" Click="PlayerDetails_Click"/>
+                                            <MenuItem Header="Move to team">
+                                                <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
+                                                <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
+                                                <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
                                     <Grid>
-                                        <Grid.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Details" Click="PlayerDetails_Click"/>
-                                                <MenuItem Header="Move to team">
-                                                    <MenuItem Header="Team 1" Click="MoveToTeam1_Click"/>
-                                                    <MenuItem Header="Team 2" Click="MoveToTeam2_Click"/>
-                                                    <MenuItem Header="Team 3" Click="MoveToTeam3_Click"/>
-                                                </MenuItem>
-                                            </ContextMenu>
-                                        </Grid.ContextMenu>
-
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
@@ -409,8 +415,8 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Text="{Binding Name}" 
-                                                   FontWeight="Bold" 
-                                                   FontSize="14" 
+                                                   FontWeight="UltraBold" 
+                                                   FontSize="15" 
                                                    Grid.ColumnSpan="2"
                                                    Margin="0,0,0,5"
                                                    Foreground="Black"
