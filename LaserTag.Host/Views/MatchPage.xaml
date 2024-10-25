@@ -251,7 +251,6 @@
             </Grid>
         </DockPanel>
 
-
         <DockPanel Grid.Column="2">
             <Grid>
                 <Grid.RowDefinitions>
@@ -354,7 +353,6 @@
                 </Border>
             </Grid>
         </DockPanel>
-
 
         <DockPanel Grid.Column="3">
             <Grid>

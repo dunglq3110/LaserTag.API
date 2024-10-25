@@ -1,20 +1,35 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace LaserTag.Host.Models
 {
-    public class HitLog
+    public partial class HitLog : ObservableObject
     {
-        public int Id { get; set; }
-        public Player Shooter { get; set; }
-        public Player Target { get; set; }
-        public Round Round { get; set; }
-        public HitType HitType { get; set; } 
-        public int Damage { get; set; }
-        public DateTime Time { get; set; }
+        [ObservableProperty]
+        private int id;
+
+        [ObservableProperty]
+        private Player shooter;
+
+        [ObservableProperty]
+        private Player target;
+
+        [ObservableProperty]
+        private Round round;
+
+        [ObservableProperty]
+        private HitType hitType;
+
+        [ObservableProperty]
+        private int damage;
+
+        [ObservableProperty]
+        private DateTime time;
 
         public override string ToString()
         {
@@ -29,5 +44,5 @@ namespace LaserTag.Host.Models
         SSketch = 2,
     }
 
-   
+
 }

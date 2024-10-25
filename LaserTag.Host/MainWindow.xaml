@@ -81,16 +81,42 @@
                         </Border>
 
                         <StackPanel>
-                            <Button Content="Wifi Connect" Click="WifiConnect_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="New Match" Click="NewMatch_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="Start Match" Click="StartMatch_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="End Match" Click="EndMatch_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="New Round" Click="NewRound_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="Start Round" Click="StartRound_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="Battle phase" Click="BattlePhase_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="End Round" Click="EndRound_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="Pause Round" Click="PauseRound_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
-                            <Button Content="Resume Round" Click="ResumeRound_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
+                            <Button x:Name="WifiConnectButton" Content="Wifi Connect" Click="WifiConnect_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
+                            <Button x:Name="StartMatchButton" 
+                                    Content="Start Match" 
+                                    Click="StartMatch_Click" 
+                                    Style="{StaticResource RightSideCurvedButtonStyle}"
+                                    Visibility="{Binding StartMatchVisibility}"/>
+                            <Button x:Name="EndMatchButton" 
+                                    Content="End Match" 
+                                    Click="EndMatch_Click" 
+                                    Style="{StaticResource RightSideCurvedButtonStyle}"
+                                    Visibility="{Binding EndMatchVisibility}"/>
+                            <Button x:Name="StartRoundButton" 
+                                    Content="Start Round" 
+                                    Click="StartRound_Click" 
+                                    Style="{StaticResource RightSideCurvedButtonStyle}"
+                                    Visibility="{Binding StartRoundVisibility}"/>
+                            <Button x:Name="BattlePhaseButton" 
+                                    Content="Battle phase" 
+                                    Click="BattlePhase_Click" 
+                                    Style="{StaticResource RightSideCurvedButtonStyle}"
+                                    Visibility="{Binding BattlePhaseVisibility}"/>
+                            <Button x:Name="EndRoundButton" 
+                                    Content="End Round" 
+                                    Click="EndRound_Click" 
+                                    Style="{StaticResource RightSideCurvedButtonStyle}"
+                                    Visibility="{Binding EndRoundVisibility}"/>
+                            <Button x:Name="PauseRoundButton" 
+                                    Content="Pause Round" 
+                                    Click="PauseRound_Click" 
+                                    Style="{StaticResource RightSideCurvedButtonStyle}"
+                                    Visibility="{Binding PauseRoundVisibility}"/>
+                            <Button x:Name="ResumeRoundButton" 
+                                    Content="Resume Round" 
+                                    Click="ResumeRound_Click" 
+                                    Style="{StaticResource RightSideCurvedButtonStyle}"
+                                    Visibility="{Binding ResumeRoundVisibility}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

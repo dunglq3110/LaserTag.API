@@ -50,10 +50,6 @@ namespace LaserTag.Host
             //GameProgressButton.BorderBrush = (SolidColorBrush)FindResource("AccentColorBrush");
             MatchButton.BorderBrush = Brushes.Transparent;
         }
-        private void NewMatch_Click(object sender, RoutedEventArgs e)
-        {
-            GameManager.Instance.NewMatch();
-        }
         private void StartMatch_Click(object sender, RoutedEventArgs e)
         {
             GameManager.Instance.StartMatch();
@@ -63,11 +59,6 @@ namespace LaserTag.Host
             GameManager.Instance.EndMatch();
         }
 
-
-        private void NewRound_Click(object sender, RoutedEventArgs e)
-        {
-            GameManager.Instance.NewRound();
-        }
         private void StartRound_Click(object sender, RoutedEventArgs e)
         {
             GameManager.Instance.StartRoundBuyPhase();

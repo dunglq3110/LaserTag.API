@@ -100,13 +100,6 @@ namespace LaserTag.Host.Logic
 
         public Dictionary<string, PlayerClientSession> PlayerClients = [];
 
-        public void MovePlayer(Player player, ObservableCollection<Player> sourceTeam, ObservableCollection<Player> targetTeam)
-        {
-            sourceTeam.Remove(player);
-            targetTeam.Add(player);
-            NotifyAllPlayerInfo("Player " + player.Name + " Move to team __");
-
-        }
 
         public void AddPlayer(PlayerClientSession playerClientSession)
         {
@@ -358,9 +351,24 @@ namespace LaserTag.Host.Logic
         [ObservableProperty]
         private ObservableCollection<int> teamWins = [0, 0, 0, 0];
 
-        public void NewMatch()
+        public Visibility StartMatchVisibility => Match.Stage == MatchStage.Lobbying ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility EndMatchVisibility => Match.Stage == MatchStage.Started ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility StartRoundVisibility => (Match.Stage == MatchStage.Started && CurrentRound.Stage == RoundStage.Lobbying) ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility BattlePhaseVisibility => (Match.Stage == MatchStage.Started && CurrentRound.Stage == RoundStage.BuyPhase) ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility EndRoundVisibility => (Match.Stage == MatchStage.Started && (CurrentRound.Stage == RoundStage.BattlePhase || CurrentRound.Stage == RoundStage.Paused)) ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility PauseRoundVisibility => (Match.Stage == MatchStage.Started && CurrentRound.Stage == RoundStage.BattlePhase) ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility ResumeRoundVisibility => (Match.Stage == MatchStage.Started && CurrentRound.Stage == RoundStage.Paused) ? Visibility.Visible : Visibility.Collapsed;
+
+
+        public void UpdateButtonVisibility()
         {
-            Match = new();
+            OnPropertyChanged(nameof(StartMatchVisibility));
+            OnPropertyChanged(nameof(EndMatchVisibility));
+            OnPropertyChanged(nameof(StartRoundVisibility));
+            OnPropertyChanged(nameof(BattlePhaseVisibility));
+            OnPropertyChanged(nameof(EndRoundVisibility));
+            OnPropertyChanged(nameof(PauseRoundVisibility));
+            OnPropertyChanged(nameof(ResumeRoundVisibility));
         }
         public void StartMatch()
         {
@@ -381,6 +389,7 @@ namespace LaserTag.Host.Logic
             SendTeamCredential();
 
             NotifyAllPlayerInfo("Game start!!");
+            UpdateButtonVisibility();
         }
         public void EndMatch()
         {
@@ -400,17 +409,13 @@ namespace LaserTag.Host.Logic
             }
             Match = new();
             NotifyAllPlayerInfo("Match End!!");
+            UpdateButtonVisibility();
 
-        }
-        public void NewRound()
-        {
-            CurrentRound = new Round();
-            Rounds.Add(CurrentRound);
-            NotifyAllPlayerInfo("Round Created!!");
         }
         public void StartRoundBuyPhase()
         {
             //BattlePhase
+            Rounds.Add(CurrentRound);
             if (CurrentRound.Stage != RoundStage.Lobbying)
             {
                 MessageBox.Show("Create new round before Starting!!");
@@ -431,6 +436,7 @@ namespace LaserTag.Host.Logic
                 PlayerClients[player.ConnectionId].SendData(JsonConvert.SerializeObject(upgradesFrame, Formatting.Indented));
             }
             PrepareForNewRound();
+            UpdateButtonVisibility();
         }
 
         public void BattlePhase()
@@ -444,6 +450,7 @@ namespace LaserTag.Host.Logic
             AssignPlayerAttributeAfterUpgrades();
             SendPlayerAttributes();
             NotifyAllPlayerInfo("Battle Phase!!");
+            UpdateButtonVisibility();
         }
         public void EndRound()
         {
@@ -464,13 +471,14 @@ namespace LaserTag.Host.Logic
                 TeamWins[winnerTeam - 1]++;
             }
             NotifyAllPlayerInfo("Round ended!!");
-
-
+            CurrentRound = new Round();
+            UpdateButtonVisibility();
         }
         public void PauseRound()
         {
             CurrentRound.Stage = RoundStage.Paused;
             NotifyAllPlayerInfo("Round Paused!!");
+            UpdateButtonVisibility();
         }
 
         public void ResumeRound()
@@ -480,8 +488,9 @@ namespace LaserTag.Host.Logic
                 MessageBox.Show("Pause Round before Resuming!!");
                 return;
             }
+            CurrentRound.Stage = RoundStage.BattlePhase;
             NotifyAllPlayerInfo("Round Resume!!");
-
+            UpdateButtonVisibility();
         }
 
 

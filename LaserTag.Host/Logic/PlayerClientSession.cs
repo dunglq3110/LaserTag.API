@@ -276,6 +276,7 @@ namespace LaserTag.Host.Logic
             GameManager gmInstance = GameManager.Instance;
             var bulletReport = GameHelper.DecodeGunReport<BulletReport>(buffer);
             Player player = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == bulletReport.id);
+            if (player == null) return;
             player.CurrentBullet = bulletReport.normalBullets;
             player.CurrentSSketchBullet = bulletReport.ssketchBullets;
             ShootLog shootLog = new ShootLog

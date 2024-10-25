@@ -5,11 +5,10 @@
              xmlns:helper="clr-namespace:LaserTag.Host.Helper"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        
         <ResourceDictionary>
             <!-- Value Converters -->
             <helper:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
-            <helper:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
-            <helper:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
 
             <!-- Global Button style -->
             <Style x:Key="GlobalCurvedButtonStyle" TargetType="Button">
