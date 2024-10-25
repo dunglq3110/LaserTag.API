@@ -45,6 +45,9 @@ namespace LaserTag.Host.Logic
                     case HostActionCode.PlayerGameLog:
                         HandlePlayerGameLog(e.Data);
                         break;
+                    case HostActionCode.HeartBeat:
+                        HandleHearthBeat();
+                        break;
                     default:
                         // Handle other message types here
                         break;
@@ -65,6 +68,40 @@ namespace LaserTag.Host.Logic
             Send(data);
         }
         #region Event handlers
+        private void HandleHearthBeat()
+        {
+            try
+            {
+                var response = new HostFrameDataBuilder<object>()
+                    .SetActionCode(HostActionCode.HeartBeat)
+                    .SetMessageType(MessageType.Success)
+                    .Build();
+
+                // Add logging
+
+                // Ensure the connection is open
+                if (State == WebSocketState.Open)
+                {
+                    string data = JsonConvert.SerializeObject(response, Formatting.Indented);
+                    Console.WriteLine($"Sending data: {data}");
+
+                    // Use the Send method from WebSocketBehavior
+                    Send(data);
+
+                    // Additional verification
+                    Console.WriteLine("Heartbeat sent successfully");
+                }
+                else
+                {
+                    Console.WriteLine($"Cannot send heartbeat - connection state: {State}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending heartbeat: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            }
+        }
         private void HandleInitialConnection(string frameData)
         {
             // Do something with the data
@@ -172,39 +209,43 @@ namespace LaserTag.Host.Logic
             {
                 var frame = JsonConvert.DeserializeObject<HostFrameData<string>>(frameData);
 
-                byte[] buffer = GameHelper.StringToByteArray(frame.Data);
-                if (buffer.Length < 2) throw new Exception("Error: Data is too short.");
+                // Split the data by the "|" separator to get multiple hex strings
+                string[] hexStrings = frame.Data.Split('|');
 
-                // Get the first byte as the message type
-                ReportType messageType = (ReportType)(buffer[0] & 0x0F);
-                Console.WriteLine($"Received header via binary message notify: {messageType}");
-
-                // Create a new array excluding the first byte (header)
-
-                //byte[] payload = buffer.Skip(1).ToArray();
-                byte[] payload = buffer.ToArray();
-
-                // Switch case to handle different message types
-                switch (messageType)
+                foreach (var hexString in hexStrings)
                 {
-                    case ReportType.HealthArmorReport:
-                        HandleHealthArmorReport(payload);
-                        break;
-                    case ReportType.DamageReport:
-                        HandleDamageReport(payload);
-                        break;
-                    case ReportType.HealingReport:
-                        HandleHealingReport(payload);
-                        break;
-                    case ReportType.SSketchReport:
-                        HandleSSketchReport(payload);
-                        break;
-                    case ReportType.BulletReport:
-                        HandleBulletReport(payload);
-                        break;
-                    default:
-                        Console.WriteLine("Unknown message type.");
-                        break;
+                    // Convert each hex string into a byte array
+                    byte[] buffer = GameHelper.StringToByteArray(hexString);
+                    if (buffer.Length < 2) throw new Exception("Error: Data is too short.");
+
+                    // Get the first byte as the message type
+                    ReportType messageType = (ReportType)(buffer[0] & 0x0F);
+                    Console.WriteLine($"Received header via binary message notify: {messageType}");
+
+                    // Process each message type in the switch case
+                    byte[] payload = buffer.ToArray();  // You might already have the full buffer here
+
+                    switch (messageType)
+                    {
+                        case ReportType.HealthArmorReport:
+                            HandleHealthArmorReport(payload);
+                            break;
+                        case ReportType.DamageReport:
+                            HandleDamageReport(payload);
+                            break;
+                        case ReportType.HealingReport:
+                            HandleHealingReport(payload);
+                            break;
+                        case ReportType.SSketchReport:
+                            HandleSSketchReport(payload);
+                            break;
+                        case ReportType.BulletReport:
+                            HandleBulletReport(payload);
+                            break;
+                        default:
+                            Console.WriteLine("Unknown message type.");
+                            break;
+                    }
                 }
             }
             catch (Exception ex)
@@ -216,9 +257,9 @@ namespace LaserTag.Host.Logic
                         .Build();
                 string data = JsonConvert.SerializeObject(response, Formatting.Indented);
                 SendData(data);
-
             }
         }
+
 
         private void HandleHealthArmorReport(byte[] buffer)
         {

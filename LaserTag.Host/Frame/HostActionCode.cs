@@ -33,6 +33,7 @@ namespace LaserTag.Host.Frame
         PlayerGameLog = 102,
 
         GameMessage = 200,
+        HeartBeat = 999,
 
 
     }

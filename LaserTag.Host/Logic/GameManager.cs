@@ -620,6 +620,7 @@ namespace LaserTag.Host.Logic
         {
 
             var test1 = playerUpgradeCache;
+            NotifyAllPlayerInfo("Test notification!!!");
             var a = 1;
         }
 
@@ -634,7 +635,7 @@ namespace LaserTag.Host.Logic
             {
                 //Default player attributes
                 new Config { Id = 1, Name = "Default Player Damage", CodeName = "damage_value", Value1 = "100" },
-                new Config { Id = 2, Name = "Default Player Max Bullet", CodeName = "bullet_max", Value1 = "10" },
+                new Config { Id = 2, Name = "Default Player Max Bullet", CodeName = "bullet_max", Value1 = "30" },
                 new Config { Id = 3, Name = "Player Fire Level", CodeName = "fire_level", Value1 = "0" },
                 new Config { Id = 4, Name = "Max Health", CodeName = "health_max", Value1 = "10000" },
                 new Config { Id = 5, Name = "Armor", CodeName = "armor_value", Value1 = "50" },
