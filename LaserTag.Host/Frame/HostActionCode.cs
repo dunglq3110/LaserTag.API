@@ -27,6 +27,8 @@ namespace LaserTag.Host.Frame
         SendUpgradesData = 21,
         SendPlayerCredentials = 22,
         SendPlayerAttributes = 23,
+        SendGameAttributeDetail = 24,
+        SendSyncPlayerData = 25,
 
         //Client specific
         PlayerBuyUpgrade = 101,

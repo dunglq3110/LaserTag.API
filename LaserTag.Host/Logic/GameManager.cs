@@ -332,6 +332,8 @@ namespace LaserTag.Host.Logic
             }
         }
 
+
+
         #endregion
 
         #region Game play
@@ -387,7 +389,7 @@ namespace LaserTag.Host.Logic
             Match.StartTime = DateTime.Now;
 
             SendTeamCredential();
-
+            SendGameAttributeDetail();
             NotifyAllPlayerInfo("Game start!!");
             UpdateButtonVisibility();
         }
@@ -449,6 +451,7 @@ namespace LaserTag.Host.Logic
             CurrentRound.Stage = RoundStage.BattlePhase;
             AssignPlayerAttributeAfterUpgrades();
             SendPlayerAttributes();
+            SyncAllPlayers();
             NotifyAllPlayerInfo("Battle Phase!!");
             UpdateButtonVisibility();
         }
@@ -545,7 +548,30 @@ namespace LaserTag.Host.Logic
             // Loop through the PlayerClients and send the credentials to each player
 
         }
+        public void SyncAllPlayers()
+        {
+            foreach (var player in AllPlayers)
+            {
+                PlayerClients[player.ConnectionId].SendSyncData();
+            }
+        }
+        public void SendGameAttributeDetail()
+        {
+            List<GameAttributeDetailDTO> gameAttributeDetailDTOs = new List<GameAttributeDetailDTO>();
+            foreach (var attribute in GameAttributes)
+            {
+                gameAttributeDetailDTOs.Add(new GameAttributeDetailDTO(attribute));
+            }
 
+            var hostFrameData = new HostFrameDataBuilder<List<GameAttributeDetailDTO>>()
+                        .SetActionCode(HostActionCode.SendGameAttributeDetail)
+                        .SetMessageType(MessageType.Response)
+                        .SetMessage("Game Attribute Details")
+                        .SetData(gameAttributeDetailDTOs)
+                        .Build();
+            string data = JsonConvert.SerializeObject(hostFrameData, Formatting.Indented);
+            NotifyAllPlayer(data);
+        }
         public int FindWinnerTeamOfRound()
         {
             // Step 1: Calculate the number of surviving players and total health for each team.

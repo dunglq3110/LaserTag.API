@@ -18,7 +18,7 @@ namespace LaserTag.Host.Logic
     {
         public Player Player { get; set; } = new Player();
 
-        
+
         protected override void OnClose(CloseEventArgs e)
         {
             GameManager.Instance.NotifyAllPlayerInfo($"Player: {Player.Name} Disconected");
@@ -174,7 +174,7 @@ namespace LaserTag.Host.Logic
             try
             {
                 var frame = JsonConvert.DeserializeObject<HostFrameData<List<int>>>(frameData);
-                foreach(var item in frame.Data)
+                foreach (var item in frame.Data)
                 {
                     GameManager.Instance.PlayerBuyUpgrade(Player.Id, item);
                 }
@@ -268,8 +268,10 @@ namespace LaserTag.Host.Logic
                 GameManager gmInstance = GameManager.Instance;
                 var healthArmorReport = GameHelper.DecodeGunReport<HealthArmorReport>(buffer);
                 Player player = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == healthArmorReport.id);
+                if (player == null) return;
                 player.CurrentHealth = healthArmorReport.health;
                 player.CurrentArmor = healthArmorReport.armor;
+                SendSyncData();
             });
         }
 
@@ -291,8 +293,9 @@ namespace LaserTag.Host.Logic
                     Time = DateTime.Now,
                 };
                 gmInstance.ShootLogs.Add(shootLog);
+                SendSyncData();
             });
-            
+
         }
 
         private void HandleDamageReport(byte[] buffer)
@@ -319,7 +322,7 @@ namespace LaserTag.Host.Logic
                     shooter.Credit += damageReport.damage;
                 }
             });
-            
+
         }
 
         private void HandleHealingReport(byte[] buffer)
@@ -345,7 +348,7 @@ namespace LaserTag.Host.Logic
                     shooter.Credit += healingReport.healAmount;
                 }
             });
-            
+
         }
 
         private void HandleSSketchReport(byte[] buffer)
@@ -374,9 +377,36 @@ namespace LaserTag.Host.Logic
 
         }
 
-        
-        #endregion
+        public void SendSyncData()
+        {
+            try
+            {
+                var response = new HostFrameDataBuilder<object>()
+                    .SetActionCode(HostActionCode.SendSyncPlayerData)
+                    .SetMessageType(MessageType.Success)
+                    .SetData(new SyncPlayerDTO(Player))
+                    .Build();
+                if (State == WebSocketState.Open)
+                {
+                    string data = JsonConvert.SerializeObject(response, Formatting.Indented);
+
+                    Send(data);
+
+                }
+                else
+                {
+                    Console.WriteLine($"Cannot send sync data - connection state: {State}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending sync data: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            }
+
+            #endregion
 
 
+        }
     }
 }
