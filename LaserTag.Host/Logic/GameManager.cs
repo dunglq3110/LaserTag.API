@@ -630,6 +630,9 @@ namespace LaserTag.Host.Logic
 
             var test1 = playerUpgradeCache;
             NotifyAllPlayerInfo("Test notification!!!");
+            OnPropertyChanged(nameof(ShootLogs));
+            OnPropertyChanged(nameof(HitLogs));
+
             var a = 1;
         }
 

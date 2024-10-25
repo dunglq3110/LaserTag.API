@@ -263,97 +263,115 @@ namespace LaserTag.Host.Logic
 
         private void HandleHealthArmorReport(byte[] buffer)
         {
-            GameManager gmInstance = GameManager.Instance;
-            var healthArmorReport = GameHelper.DecodeGunReport<HealthArmorReport>(buffer);
-            Player player = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == healthArmorReport.id);
-            player.CurrentHealth = healthArmorReport.health;
-            player.CurrentArmor = healthArmorReport.armor;
-
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                GameManager gmInstance = GameManager.Instance;
+                var healthArmorReport = GameHelper.DecodeGunReport<HealthArmorReport>(buffer);
+                Player player = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == healthArmorReport.id);
+                player.CurrentHealth = healthArmorReport.health;
+                player.CurrentArmor = healthArmorReport.armor;
+            });
         }
 
         private void HandleBulletReport(byte[] buffer)
         {
-            GameManager gmInstance = GameManager.Instance;
-            var bulletReport = GameHelper.DecodeGunReport<BulletReport>(buffer);
-            Player player = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == bulletReport.id);
-            if (player == null) return;
-            player.CurrentBullet = bulletReport.normalBullets;
-            player.CurrentSSketchBullet = bulletReport.ssketchBullets;
-            ShootLog shootLog = new ShootLog
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                Id = gmInstance.ShootLogs.Count(),
-                Shooter = player,
-                Round = gmInstance.CurrentRound,
-                Time = DateTime.Now,
-            };
-            gmInstance.ShootLogs.Add(shootLog);
+                GameManager gmInstance = GameManager.Instance;
+                var bulletReport = GameHelper.DecodeGunReport<BulletReport>(buffer);
+                Player player = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == bulletReport.id);
+                if (player == null) return;
+                player.CurrentBullet = bulletReport.normalBullets;
+                player.CurrentSSketchBullet = bulletReport.ssketchBullets;
+                ShootLog shootLog = new ShootLog
+                {
+                    Id = gmInstance.ShootLogs.Count(),
+                    Shooter = player,
+                    Round = gmInstance.CurrentRound,
+                    Time = DateTime.Now,
+                };
+                gmInstance.ShootLogs.Add(shootLog);
+            });
+            
         }
 
         private void HandleDamageReport(byte[] buffer)
         {
-            var damageReport = GameHelper.DecodeGunReport<DamageReport>(buffer);
-            GameManager gmInstance = GameManager.Instance;
-            var shooter = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == damageReport.taggerId);
-            var target = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == damageReport.victimId);
-            if (shooter != null && target != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                HitLog hitLog = new HitLog
+                var damageReport = GameHelper.DecodeGunReport<DamageReport>(buffer);
+                GameManager gmInstance = GameManager.Instance;
+                var shooter = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == damageReport.taggerId);
+                var target = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == damageReport.victimId);
+                if (shooter != null && target != null)
                 {
-                    Id = GameManager.Instance.HitLogs.Count(),
-                    Shooter = shooter,
-                    Target = target,
-                    Round = gmInstance.CurrentRound,
-                    HitType = HitType.Normal,
-                    Damage = damageReport.damage,
-                    Time = DateTime.Now
-                };
-                gmInstance.HitLogs.Add(hitLog);
-                shooter.Credit += damageReport.damage;
-            }
+                    HitLog hitLog = new HitLog
+                    {
+                        Id = GameManager.Instance.HitLogs.Count(),
+                        Shooter = shooter,
+                        Target = target,
+                        Round = gmInstance.CurrentRound,
+                        HitType = HitType.Normal,
+                        Damage = damageReport.damage,
+                        Time = DateTime.Now
+                    };
+                    gmInstance.HitLogs.Add(hitLog);
+                    shooter.Credit += damageReport.damage;
+                }
+            });
+            
         }
 
         private void HandleHealingReport(byte[] buffer)
         {
-            var healingReport = GameHelper.DecodeGunReport<HealingReport>(buffer);
-            GameManager gmInstance = GameManager.Instance;
-            var shooter = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == healingReport.healerId);
-            var target = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == healingReport.healedId);
-            if (shooter != null && target != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                HitLog hitLog = new HitLog
+                var healingReport = GameHelper.DecodeGunReport<HealingReport>(buffer);
+                GameManager gmInstance = GameManager.Instance;
+                var shooter = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == healingReport.healerId);
+                var target = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == healingReport.healedId);
+                if (shooter != null && target != null)
                 {
-                    Shooter = shooter,
-                    Target = target,
-                    Round = gmInstance.CurrentRound,
-                    HitType = HitType.Healing,
-                    Damage = healingReport.healAmount,
-                    Time = DateTime.Now
-                };
-                gmInstance.HitLogs.Add(hitLog);
-                shooter.Credit += healingReport.healAmount;
-            }
+                    HitLog hitLog = new HitLog
+                    {
+                        Shooter = shooter,
+                        Target = target,
+                        Round = gmInstance.CurrentRound,
+                        HitType = HitType.Healing,
+                        Damage = healingReport.healAmount,
+                        Time = DateTime.Now
+                    };
+                    gmInstance.HitLogs.Add(hitLog);
+                    shooter.Credit += healingReport.healAmount;
+                }
+            });
+            
         }
 
         private void HandleSSketchReport(byte[] buffer)
         {
-            var ssketchReport = GameHelper.DecodeGunReport<SSketchReport>(buffer);
-            GameManager gmInstance = GameManager.Instance;
-            var shooter = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == ssketchReport.taggerId);
-            var target = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == ssketchReport.victimId);
-            if (shooter != null && target != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                HitLog hitLog = new HitLog
+                var ssketchReport = GameHelper.DecodeGunReport<SSketchReport>(buffer);
+                GameManager gmInstance = GameManager.Instance;
+                var shooter = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == ssketchReport.taggerId);
+                var target = gmInstance.AllPlayers.FirstOrDefault(p => p.Id == ssketchReport.victimId);
+                if (shooter != null && target != null)
                 {
-                    Shooter = shooter,
-                    Target = target,
-                    Round = gmInstance.CurrentRound,
-                    HitType = HitType.Normal,
-                    Damage = ssketchReport.damage,
-                    Time = DateTime.Now
-                };
-                gmInstance.HitLogs.Add(hitLog);
-                shooter.Credit += ssketchReport.damage;
-            }
+                    HitLog hitLog = new HitLog
+                    {
+                        Shooter = shooter,
+                        Target = target,
+                        Round = gmInstance.CurrentRound,
+                        HitType = HitType.Normal,
+                        Damage = ssketchReport.damage,
+                        Time = DateTime.Now
+                    };
+                    gmInstance.HitLogs.Add(hitLog);
+                    shooter.Credit += ssketchReport.damage;
+                }
+            });
+
         }
 
         
