@@ -24,7 +24,6 @@
             <SolidColorBrush x:Key="Team4PlayerBackground" Color="#DFD0B8"/>
 
             <!-- Value Converters -->
-            <helper:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
 
             <!-- Common Button Style -->
             <Style x:Key="BaseButtonStyle" TargetType="Button">
