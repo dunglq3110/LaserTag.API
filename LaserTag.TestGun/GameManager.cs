@@ -67,8 +67,8 @@ namespace LaserTag.TestGun
                 if (_wssv == null)
                 {
                     IpAddress = GetLocalIPv4();
-                    _wssv = new WebSocketServer($"ws://{IpAddress}:1234");
-                    _wssv.AddWebSocketService<PlayerClientSession>("/LaserTag");
+                    _wssv = new WebSocketServer($"ws://{IpAddress}:81");
+                    _wssv.AddWebSocketService<PlayerClientSession>("/ws");
                     _wssv.Start();
                 }
                 else
