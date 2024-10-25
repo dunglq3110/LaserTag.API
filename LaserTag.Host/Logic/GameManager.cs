@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LaserTag.Host.Dtos;
 using LaserTag.Host.Frame;
 using LaserTag.Host.Models;
