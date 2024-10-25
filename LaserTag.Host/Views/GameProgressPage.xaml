@@ -1,4 +1,4 @@
-﻿<Page x:Class="LaserTag.Host.Views.GameProgressPage"
+<Page x:Class="LaserTag.Host.Views.GameProgressPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -24,34 +24,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid.Resources>
-            <Style x:Key="LogListViewStyle" TargetType="ListView">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-            </Style>
-
-            <Style x:Key="LogBorderStyle" TargetType="Border">
-                <Setter Property="BorderBrush" Value="#FF373737"/>
-                <Setter Property="BorderThickness" Value="4"/>
-                <Setter Property="CornerRadius" Value="0"/>
-                <Setter Property="Background" Value="#8B8B8B"/>
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="Padding" Value="5"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#AAAAAA"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="LogTextBlockStyle" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontFamily" Value="Segoe UI"/>
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="Margin" Value="0,2"/>
-            </Style>
-        </Grid.Resources>
-
         <!-- Hit Logs Section -->
         <DockPanel Grid.Column="2">
             <Grid>
@@ -60,35 +32,26 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Margin="15,15,15,10" CornerRadius="0" Background="#821131" BorderThickness="3" BorderBrush="#DFD0B8">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#C7253E" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
-                    </Border.Effect>
-                    <TextBlock Text="Hit Logs" 
-                             HorizontalAlignment="Center" 
-                             VerticalAlignment="Center"
-                             FontWeight="Bold" 
-                             FontSize="25" 
-                             FontFamily="Arial"
-                             Margin="0,5,0,5"
-                             Foreground="#DFD0B8"/>
+                <!-- Team 3 Header -->
+                <Border Grid.Row="0" Style="{StaticResource TeamHeaderStyle}" Tag="Team3"
+                        Background="{StaticResource Team3Background}">
+                    <TextBlock Text="Hit Logs"
+                       Style="{StaticResource TeamHeaderTextStyle}"
+                       Foreground="{StaticResource TextPrimaryColor}"/>
                 </Border>
 
-                <Border Grid.Row="1" Margin="15,0,15,15" Background="#821131" CornerRadius="0" BorderThickness="3" BorderBrush="#DFD0B8">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#FFCDD2" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
-                    </Border.Effect>
-                    <ListView ItemsSource="{Binding HitLogs}" 
-                            Style="{StaticResource LogListViewStyle}"
-                            Margin="3">
+                <Border Grid.Row="1" 
+                        Style="{StaticResource TeamListStyle}" Tag="Team3"
+                        Background="{StaticResource Team3Background}">
+                    <ListView ItemsSource="{Binding HitLogs}"
+                              Style="{StaticResource TeamListViewStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource LogBorderStyle}" 
-                                        BorderBrush="#DFD0B8" 
-                                        Padding="8">
+                                <Border Style="{StaticResource TeamListStyle}" Tag="Team3">
                                     <Border.Background>
                                         <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToBackgroundConverter}}"/>
                                     </Border.Background>
+                                
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -97,52 +60,54 @@
                                         </Grid.RowDefinitions>
 
                                         <StackPanel Grid.Row="0">
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}">
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
                                                     <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                <Run Text="Shooter: " FontWeight="Bold"/>
+                                            
+                                                <Run Text="Shooter: " FontWeight="Bold" Foreground="#DFD0B8"/>
                                                 <Run Text="{Binding Shooter.Name}"/>
                                             </TextBlock>
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}">
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
                                                     <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                <Run Text="Target: " FontWeight="Bold"/>
+                                                <Run Text="Target: " FontWeight="Bold" Foreground="#DFD0B8"/>
                                                 <Run Text="{Binding Target.Name}"/>
                                             </TextBlock>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="1">
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}">
+                                            
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
                                                     <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                <Run Text="Damage: " FontWeight="Bold"/>
+                                                <Run Text="Damage: " FontWeight="Bold" Foreground="#DFD0B8"/>
                                                 <Run Text="{Binding Damage}"/>
                                             </TextBlock>
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}">
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
                                                     <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                <Run Text="Hit Type: " FontWeight="Bold"/>
+                                                <Run Text="Hit Type: " FontWeight="Bold" Foreground="#DFD0B8"/>
                                                 <Run Text="{Binding HitType}"/>
                                             </TextBlock>
                                         </StackPanel>
 
                                         <StackPanel Grid.Row="2">
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}">
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
                                                     <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                <Run Text="Round: " FontWeight="Bold"/>
+                                                <Run Text="Round: " FontWeight="Bold" Foreground="#DFD0B8"/>
                                                 <Run Text="{Binding Round.Id}"/>
                                             </TextBlock>
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}">
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
                                                     <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                <Run Text="Time: " FontWeight="Bold"/>
+                                                <Run Text="Time: " FontWeight="Bold" Foreground="#DFD0B8"/>
                                                 <Run Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}"/>
                                             </TextBlock>
                                         </StackPanel>
@@ -163,30 +128,23 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Margin="15,15,15,10" CornerRadius="0" Background="#03346E" BorderThickness="3" BorderBrush="#DFD0B8">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#BBDEFB" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
-                    </Border.Effect>
-                    <TextBlock Text="Shoot Logs" 
-                             HorizontalAlignment="Center" 
-                             VerticalAlignment="Center"
-                             FontWeight="Bold" 
-                             FontSize="25" 
-                             FontFamily="Arial"
-                             Margin="0,5,0,5"
-                             Foreground="#DFD0B8"/>
+                <Border Grid.Row="0"  Style="{StaticResource TeamHeaderStyle}" Tag="Team4"
+                        Background="{StaticResource Team4Background}">
+                    <TextBlock Text="Shoot Logs"
+                               Style="{StaticResource TeamHeaderTextStyle}"
+                               Foreground="Black"/>
                 </Border>
 
-                <Border Grid.Row="1" Margin="15,0,15,15" Background="#03346E" CornerRadius="0" BorderThickness="3" BorderBrush="#DFD0B8">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#BBDEFB" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
-                    </Border.Effect>
-                    <ListView ItemsSource="{Binding ShootLogs}" 
-                            Style="{StaticResource LogListViewStyle}"
-                            Margin="3">
+                <Border Grid.Row="1" 
+                        Style="{StaticResource TeamListStyle}" Tag="Team4"
+                        Background="{StaticResource Team4Background}">
+                    <ListView ItemsSource="{Binding ShootLogs}"
+                              Style="{StaticResource TeamListViewStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource LogBorderStyle}" BorderBrush="#DFD0B8" Padding="8" Background="#4682A9">
+                                <Border Style="{StaticResource PlayerBorderStyle}"
+                                        Background="{StaticResource Team4PlayerBackground}"
+                                        BorderBrush="#D49B54">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -194,19 +152,19 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Style="{StaticResource LogTextBlockStyle}" Foreground="#DFD0B8" FontSize="14" FontWeight="Bold">
-                                            <Run Text="Shooter: "/>
-                                            <Run Text="{Binding Shooter.Name}"/>
+                                        <TextBlock Style="{StaticResource PlayerTextBlockStyle}" FontSize="14" FontWeight="Bold">
+                                            <Run Text="Shooter: " Foreground="#000"/>
+                                            <Run Text="{Binding Shooter.Name}" Foreground="#000"/>
                                         </TextBlock>
 
                                         <StackPanel Grid.Row="1">
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}" Foreground="#DFD0B8">
-                                                <Run Text="Round: " FontWeight="Bold"/>
-                                                <Run Text="{Binding Round.Id}"/>
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
+                                                <Run Text="Round: " FontWeight="Bold" Foreground="#000"/>
+                                                <Run Text="{Binding Round.Id}" Foreground="#000"/>
                                             </TextBlock>
-                                            <TextBlock Style="{StaticResource LogTextBlockStyle}" Foreground="#DFD0B8">
-                                                <Run Text="Time: " FontWeight="Bold"/>
-                                                <Run Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}"/>
+                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
+                                                <Run Text="Time: " FontWeight="Bold" Foreground="#000"/>
+                                                <Run Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}" Foreground="#000"/>
                                             </TextBlock>
                                         </StackPanel>
 
