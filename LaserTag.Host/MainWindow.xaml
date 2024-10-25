@@ -39,14 +39,8 @@
                 <!-- Top Tab Buttons -->
                 <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="2" Padding="15, 10, 15, 10" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="MatchButton" 
-                            Content="Match" 
-                            Click="MatchButton_Click" 
-                            Style="{StaticResource GlobalCurvedButtonStyle}"/>
-                        <Button x:Name="GameProgressButton" 
-                            Content="Game Progress" 
-                            Click="GameProgressButton_Click" 
-                            Style="{StaticResource GlobalCurvedButtonStyle}"/>
+                        <Button x:Name="MatchButton" Content="Match" Click="MatchButton_Click" Style="{StaticResource GlobalCurvedButtonStyle}"/>
+                        <Button x:Name="GameProgressButton" Content="Game Progress" Click="GameProgressButton_Click" Style="{StaticResource GlobalCurvedButtonStyle}"/>
                     </StackPanel>
                 </Border>
 
@@ -58,26 +52,27 @@
                     </Border.Effect>
                 </Border>
 
-                <!-- Right side control button -->
+                <!-- Right side control buttons -->
                 <Border Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" CornerRadius="3" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="0" Opacity="0.5" ShadowDepth="3"/>
                     </Border.Effect>
-
                     <StackPanel Grid.Row="1" Grid.RowSpan="3" Grid.Column="1">
-                        <Border Margin="15, 10, 15, 10" CornerRadius="0" Background="White" BorderThickness="3" Width="185" BorderBrush="#95A5A6">
-                            <Border.Effect>
-                                <DropShadowEffect Color="#95A5A6" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
-                            </Border.Effect>
-                            <TextBlock 
-                                Text="{Binding IpAddress}"
-                                HorizontalAlignment="Center" 
-                                FontWeight="Bold" 
-                                FontSize="20" 
-                                FontFamily="Arial"
-                                Margin="0,5,0,5"
-                                DockPanel.Dock="Top"
-                                Foreground="Black"/>
+                        <Border Margin="15, 15, 15, 10" CornerRadius="0" Background="White" BorderThickness="3" Width="185" BorderBrush="#95A5A6">
+                            
+                        <Border.Effect>
+                            <DropShadowEffect Color="#95A5A6" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
+                        </Border.Effect>
+                            
+                        <TextBlock 
+                            Text="{Binding IpAddress}"
+                            HorizontalAlignment="Center" 
+                            FontWeight="Bold" 
+                            FontSize="20" 
+                            FontFamily="Arial"
+                            Margin="0,5,0,5"
+                            DockPanel.Dock="Top"
+                            Foreground="Black"/>
                         </Border>
 
                         <StackPanel>
@@ -92,6 +87,7 @@
                             <Button Content="Pause Round" Click="PauseRound_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
                             <Button Content="Resume Round" Click="ResumeRound_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
                         </StackPanel>
+                        
                     </StackPanel>
                 </Border>
             </Grid>
