@@ -27,7 +27,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -37,7 +37,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Top Tab Buttons -->
-                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="2" Padding="15, 10, 15, 10" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
+                <Border Grid.Row="0" Grid.Column="0" CornerRadius="2" Padding="15, 10, 15, 10" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="MatchButton" Content="Match" Click="MatchButton_Click" Style="{StaticResource GlobalCurvedButtonStyle}"/>
                         <Button x:Name="GameProgressButton" Content="Game Progress" Click="GameProgressButton_Click" Style="{StaticResource GlobalCurvedButtonStyle}"/>
@@ -52,31 +52,64 @@
                     </Border.Effect>
                 </Border>
 
-                <!-- Right side control buttons -->
-                <Border Grid.Row="1" Grid.RowSpan="3" Grid.Column="1" CornerRadius="3" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="0" Opacity="0.5" ShadowDepth="3"/>
-                    </Border.Effect>
-                    <StackPanel Grid.Row="1" Grid.RowSpan="3" Grid.Column="1">
-                        <Border Margin="15, 15, 15, 10" CornerRadius="0" Background="White" BorderThickness="3" Width="185" BorderBrush="#95A5A6">
-                            
-                        <Border.Effect>
-                            <DropShadowEffect Color="#95A5A6" BlurRadius="0" Opacity="0.5" ShadowDepth="2"/>
-                        </Border.Effect>
-                            
+                <!-- IP side region -->
+                <Border Grid.Row="0" Grid.Column="1" CornerRadius="3" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
+                    <TextBlock 
+                        Text="Setting Btn Here"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        FontWeight="Bold" 
+                        FontSize="20" 
+                        FontFamily="Arial"
+                        Margin="0,5,0,5"
+                        Foreground="#EAD8B1"/>
+                </Border>
+
+                <!-- IP side region -->
+                <Border Grid.Row="1" Grid.Column="1" CornerRadius="3" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Margin="15, 15, 15, 10" CornerRadius="0" Background="White" BorderThickness="3" Width="185" BorderBrush="#95A5A6">
+                            <TextBlock 
+                                    Text="{Binding IpAddress}"
+                                    HorizontalAlignment="Center" 
+                                    FontWeight="Bold" 
+                                    FontSize="20" 
+                                    FontFamily="Arial"
+                                    Margin="0,5,0,5"
+                                    Foreground="Black"/>
+                        </Border>
+
+                        <StackPanel Grid.Row="1">
+                            <Button x:Name="WifiConnectButton" Content="Reconnects" Click="WifiConnect_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Match settings side region -->
+                <Border Grid.Row="2" Grid.Column="1" CornerRadius="3" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
                         <TextBlock 
-                            Text="{Binding IpAddress}"
+                            Text="MATCH SETTINGS"
                             HorizontalAlignment="Center" 
                             FontWeight="Bold" 
                             FontSize="20" 
+                            FontStyle="Italic"
                             FontFamily="Arial"
-                            Margin="0,5,0,5"
-                            DockPanel.Dock="Top"
-                            Foreground="Black"/>
-                        </Border>
+                            Margin="0,15,0,15"
+                            Foreground="#EAD8B1"/>
 
-                        <StackPanel>
-                            <Button x:Name="WifiConnectButton" Content="Wifi Connect" Click="WifiConnect_Click" Style="{StaticResource RightSideCurvedButtonStyle}"/>
+                        <StackPanel Grid.Row="1">
                             <Button x:Name="StartMatchButton" 
                                     Content="Start Match" 
                                     Click="StartMatch_Click" 
@@ -84,9 +117,46 @@
                                     Visibility="{Binding StartMatchVisibility}"/>
                             <Button x:Name="EndMatchButton" 
                                     Content="End Match" 
+                                    VerticalAlignment="Bottom"
                                     Click="EndMatch_Click" 
                                     Style="{StaticResource RightSideCurvedButtonStyle}"
                                     Visibility="{Binding EndMatchVisibility}"/>
+                        </StackPanel>
+
+                        <Border Grid.Row="2" BorderBrush="#EAD8B1" CornerRadius="9" BorderThickness="0, 3, 0, 0">
+                            <TextBlock 
+                                Text="STATUS: "
+                                HorizontalAlignment="Center" 
+                                FontWeight="Bold" 
+                                FontSize="15" 
+                                FontStyle="Italic"
+                                FontFamily="Arial"
+                                Margin="0,15,0,15"
+                                Foreground="#EAD8B1"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Round settings side region -->
+                <Border Grid.Row="3" Grid.Column="1" CornerRadius="3" Margin="5" BorderBrush="#EAD8B1" BorderThickness="3" Background="#394867">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock 
+                            Text="ROUND SETTINGS"
+                            HorizontalAlignment="Center" 
+                            FontWeight="Bold" 
+                            FontSize="20" 
+                            FontStyle="Italic"
+                            FontFamily="Arial"
+                            Margin="0,15,0,15"
+                            Foreground="#EAD8B1"/>
+
+                        <StackPanel Grid.Row="1">
                             <Button x:Name="StartRoundButton" 
                                     Content="Start Round" 
                                     Click="StartRound_Click" 
@@ -113,8 +183,19 @@
                                     Style="{StaticResource RightSideCurvedButtonStyle}"
                                     Visibility="{Binding ResumeRoundVisibility}"/>
                         </StackPanel>
-                        
-                    </StackPanel>
+
+                        <Border Grid.Row="2" BorderBrush="#EAD8B1" CornerRadius="9" BorderThickness="0, 3, 0, 0">
+                            <TextBlock 
+                                Text="STATUS: "
+                                HorizontalAlignment="Center" 
+                                FontWeight="Bold" 
+                                FontSize="15" 
+                                FontStyle="Italic"
+                                FontFamily="Arial"
+                                Margin="0,15,0,15"
+                                Foreground="#EAD8B1"/>
+                        </Border>
+                    </Grid>
                 </Border>
             </Grid>
         </Border>
