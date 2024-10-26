@@ -67,12 +67,33 @@
                 </Border>
 
                 <!-- Detail stats section -->
-                <Border Grid.Row="2" Grid.RowSpan="1" Style="{StaticResource TeamListStyle}" Tag="Team1">
+                <Border Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource TeamListStyle}" Tag="Team1" Background="{StaticResource Team1Background}">
                     <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalDamage, StringFormat='Damage dealt: {0}'}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalHeal, StringFormat='Heal point: {0}'}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalShots, StringFormat='Total Shots: {0}'}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalHits, StringFormat='Total Hits: {0}'}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalKills, StringFormat='Total Kills: {0}'}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalAssists, StringFormat='Total Assists: {0}'}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalDeaths, StringFormat='Total Deaths: {0}'}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalMoney, StringFormat='Total Money: {0}'}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.GunMac, StringFormat='Gun Mac: {0}'}" Grid.ColumnSpan="2"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.VestMac, StringFormat='Vest Mac: {0}'}" Grid.ColumnSpan="2"/>
                     </Grid>
                 </Border>
-
             </Grid>
         </DockPanel>
 
@@ -84,16 +105,8 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Header -->
-                <Border Grid.Row="0" Style="{StaticResource TeamHeaderStyle}" Tag="Team2"
-                        Background="{StaticResource Team1Background}">
-                    <TextBlock Text="Details"
-                       Style="{StaticResource TeamHeaderTextStyle}"
-                       Foreground="{StaticResource TextPrimaryColor}"/>
-                </Border>
-
-                <Border Grid.Row="1" 
-                        Style="{StaticResource TeamListStyle}" Tag="Team3"
+                <Border Grid.Row="0" 
+                        Style="{StaticResource TeamHeaderStyle}" Tag="Team3" Grid.RowSpan="2"
                         Background="{StaticResource Team1Background}">
                     <ListView ItemsSource="{Binding HitLogs}"
                               Style="{StaticResource TeamListViewStyle}">
