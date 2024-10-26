@@ -125,7 +125,7 @@
 
                         <Border Grid.Row="2" BorderBrush="#EAD8B1" CornerRadius="9" BorderThickness="0, 3, 0, 0">
                             <TextBlock 
-                                Text="STATUS: "
+                                Text="{Binding Match.Stage, StringFormat='Current Stage: {0}'}"
                                 HorizontalAlignment="Center" 
                                 FontWeight="Bold" 
                                 FontSize="15" 
@@ -186,7 +186,7 @@
 
                         <Border Grid.Row="2" BorderBrush="#EAD8B1" CornerRadius="9" BorderThickness="0, 3, 0, 0">
                             <TextBlock 
-                                Text="STATUS: "
+                                Text="{Binding CurrentRound.Stage, StringFormat='Current Stage: {0}'}"
                                 HorizontalAlignment="Center" 
                                 FontWeight="Bold" 
                                 FontSize="15" 

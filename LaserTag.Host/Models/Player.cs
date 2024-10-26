@@ -38,8 +38,29 @@ namespace LaserTag.Host.Models
         private int currentArmor;
 
         [ObservableProperty]
-        private int credit = 100000000;
-    
+        private int totalDamage;
+
+        [ObservableProperty]
+        private int totalHeal;
+
+        [ObservableProperty]
+        private int totalShots;
+
+        [ObservableProperty]
+        private int totalHits;
+
+        [ObservableProperty]
+        private int totalKills;
+
+        [ObservableProperty]
+        private int totalAssists;
+
+        [ObservableProperty]
+        private int totalDeaths;
+
+        [ObservableProperty]
+        private int credit = 10000;
+
         public List<PlayerAttribute> PlayerAttributes { get; set; } = new List<PlayerAttribute>();
         public List<Upgrade> Upgrades { get; set; } = new List<Upgrade>();
 

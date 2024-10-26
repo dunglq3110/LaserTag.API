@@ -11,24 +11,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LaserTag.Host
+namespace LaserTag.Host.Views.PlayerDetail
 {
     /// <summary>
-    /// Interaction logic for PlayerDetailsWindow.xaml
+    /// Interaction logic for DetailTabControl.xaml
     /// </summary>
-    public partial class PlayerDetailsWindow : Window
+    public partial class DetailTabControl : UserControl
     {
-        public PlayerDetailsWindow(Player player)
+        private readonly Player _player;
+
+        public DetailTabControl(Player player)
         {
             InitializeComponent();
-            DataContext = player;
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            _player = player;
+            DataContext = _player;
         }
     }
 }

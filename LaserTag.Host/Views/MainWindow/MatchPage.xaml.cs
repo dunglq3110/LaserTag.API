@@ -1,5 +1,6 @@
 ﻿using LaserTag.Host.Logic;
 using LaserTag.Host.Models;
+using LaserTag.Host.Views.PlayerDetail;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -27,16 +29,31 @@ namespace LaserTag.Host.Views
         {
             InitializeComponent();
             DataContext = GameManager.Instance;
+            
         }
 
         private void PlayerDetails_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is MenuItem menuItem &&
-                menuItem.DataContext is Player player)
+            if (sender is MenuItem menuItem && menuItem.DataContext is Player player)
             {
-                PlayerDetailsWindow detailsWindow = new PlayerDetailsWindow(player);
-                detailsWindow.Owner = Window.GetWindow(this);
-                detailsWindow.ShowDialog();
+                // Create popup window
+                var popup = new Window
+                {
+                    Title = $"Player Details - {player.Name}",
+                    Width = 620,
+                    Height = 600,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    Owner = Window.GetWindow(this),
+                    ResizeMode = ResizeMode.NoResize,
+                    Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF333333"))
+                };
+
+                // Create and set the player detail control
+                var playerDetailControl = new PlayerDetailPopup(player);
+                popup.Content = playerDetailControl;
+
+                // Show the popup
+                popup.ShowDialog();
             }
         }
 

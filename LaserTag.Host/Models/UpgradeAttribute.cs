@@ -24,9 +24,5 @@ namespace LaserTag.Host.Models
             GameAttribute = gameAttribute.Clone();
             Value = value;
         }
-
-        public UpgradeAttribute()
-        {
-        }
     }
 }

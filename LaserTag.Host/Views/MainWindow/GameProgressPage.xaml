@@ -57,10 +57,16 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Style="{StaticResource TeamHeaderTextStyle}" Foreground="{StaticResource TextPrimaryColor}" Text="Name"/>
-                        <ComboBox Grid.Row="0" Grid.Column="1" Margin="10, 10, 40, 10" ItemsSource="{Binding Players}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedPlayer}"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Margin="10,10,40,10"
+                                  ItemsSource="{Binding AllPlayers}"
+                                  DisplayMemberPath="Name"
+                                  SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" Style="{StaticResource TeamHeaderTextStyle}" Foreground="{StaticResource TextPrimaryColor}" Text="Type"/>
-                        <ComboBox Grid.Row="1" Grid.Column="1" Margin="10, 10, 40, 10" ItemsSource="{Binding PlayerTypes}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedPlayerType}"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" Margin="10,10,40,10"
+                                  ItemsSource="{Binding FilterCategories}"
+                                  SelectedItem="{Binding SelectedFilterCategory, Mode=TwoWay}"/>
+
 
                         <Button Grid.Row="2" Grid.Column="0" Margin="10" Content="Search" Grid.ColumnSpan="3"  Style="{StaticResource GlobalCurvedButtonStyle}"/>
                     </Grid>
@@ -89,14 +95,15 @@
                         <TextBlock Grid.Row="2" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalKills, StringFormat='Total Kills: {0}'}"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalAssists, StringFormat='Total Assists: {0}'}"/>
                         <TextBlock Grid.Row="3" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalDeaths, StringFormat='Total Deaths: {0}'}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.TotalMoney, StringFormat='Total Money: {0}'}"/>
-                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.GunMac, StringFormat='Gun Mac: {0}'}" Grid.ColumnSpan="2"/>
-                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.VestMac, StringFormat='Vest Mac: {0}'}" Grid.ColumnSpan="2"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.Credit, StringFormat='Total Money: {0}'}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.MacGun, StringFormat='Gun Mac: {0}'}" Grid.ColumnSpan="2"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="10" Style="{StaticResource PlayerTextBlockStyle}" FontSize="18" Foreground="{StaticResource TextPrimaryColor}" Text="{Binding SelectedPlayer.MacVest, StringFormat='Vest Mac: {0}'}" Grid.ColumnSpan="2"/>
                     </Grid>
                 </Border>
             </Grid>
         </DockPanel>
 
+        <!-- Players Logs Section -->
         <!-- Players Logs Section -->
         <DockPanel Grid.Column="1">
             <Grid>
@@ -106,74 +113,44 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" 
-                        Style="{StaticResource TeamHeaderStyle}" Tag="Team3" Grid.RowSpan="2"
-                        Background="{StaticResource Team1Background}">
-                    <ListView ItemsSource="{Binding HitLogs}"
-                              Style="{StaticResource TeamListViewStyle}">
+                Style="{StaticResource TeamHeaderStyle}" Tag="Team3" Grid.RowSpan="2"
+                Background="{StaticResource Team1Background}">
+                    <ListView ItemsSource="{Binding FilteredLogs}"
+                      Style="{StaticResource TeamListViewStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{StaticResource TeamListStyle}" Tag="Team2">
                                     <Border.Background>
-                                        <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToBackgroundConverter}}"/>
+                                        <SolidColorBrush Color="{Binding Type, Converter={StaticResource HitTypeToBackgroundConverter}}"/>
                                     </Border.Background>
 
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
-                                        <StackPanel Grid.Row="0">
-                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
-                                                </TextBlock.Foreground>
-                                            
-                                                <Run Text="Shooter: " FontWeight="Bold" Foreground="#DFD0B8"/>
-                                                <Run Text="{Binding Shooter.Name}"/>
-                                            </TextBlock>
-                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
-                                                </TextBlock.Foreground>
-                                                <Run Text="Target: " FontWeight="Bold" Foreground="#DFD0B8"/>
-                                                <Run Text="{Binding Target.Name}"/>
-                                            </TextBlock>
-                                        </StackPanel>
+                                        <TextBlock Grid.Row="0" Style="{StaticResource PlayerTextBlockStyle}">
+                                            <TextBlock.Foreground>
+                                                <SolidColorBrush Color="{Binding Type, Converter={StaticResource HitTypeToForegroundConverter}}"/>
+                                            </TextBlock.Foreground>
+                                    <Run Text="{Binding Description}" FontWeight="Bold"/>
+                                        </TextBlock>
 
                                         <StackPanel Grid.Row="1">
-
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
+                                                    <SolidColorBrush Color="{Binding Type, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                    <Run Text="Damage: " FontWeight="Bold" Foreground="#DFD0B8"/>
-                                                    <Run Text="{Binding Damage}"/>
+                                        <Run Text="Round: " FontWeight="Bold" Foreground="#DFD0B8"/>
+                                        <Run Text="{Binding Round.Id}"/>
                                             </TextBlock>
                                             <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
                                                 <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
+                                                    <SolidColorBrush Color="{Binding Type, Converter={StaticResource HitTypeToForegroundConverter}}"/>
                                                 </TextBlock.Foreground>
-                                                    <Run Text="Hit Type: " FontWeight="Bold" Foreground="#DFD0B8"/>
-                                                    <Run Text="{Binding HitType}"/>
-                                            </TextBlock>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Row="2">
-                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
-                                                </TextBlock.Foreground>
-                                                    <Run Text="Round: " FontWeight="Bold" Foreground="#DFD0B8"/>
-                                                    <Run Text="{Binding Round.Id}"/>
-                                            </TextBlock>
-                                            <TextBlock Style="{StaticResource PlayerTextBlockStyle}">
-                                                <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{Binding HitType, Converter={StaticResource HitTypeToForegroundConverter}}"/>
-                                                </TextBlock.Foreground>
-                                                    <Run Text="Time: " FontWeight="Bold" Foreground="#DFD0B8"/>
-                                                    <Run Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}"/>
+                                        <Run Text="Time: " FontWeight="Bold" Foreground="#DFD0B8"/>
+                                        <Run Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}"/>
                                             </TextBlock>
                                         </StackPanel>
                                     </Grid>

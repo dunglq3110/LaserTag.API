@@ -283,8 +283,8 @@ namespace LaserTag.Host.Logic
             // Reset current health and bullets to max values for each player
             foreach (var player in AllPlayers)
             {
-                var maxHealth = player.GetAttributeValue("health_max") ?? 100; // Default to 100 if not set
-                var maxBullet = player.GetAttributeValue("bullet_max") ?? 10;  // Default to 10 if not set
+                var maxHealth = player.GetAttributeValue("health_max") ?? 0; // Default to 100 if not set
+                var maxBullet = player.GetAttributeValue("bullet_max") ?? 0;  // Default to 10 if not set
 
                 player.CurrentHealth = maxHealth;
                 player.CurrentBullet = maxBullet;
@@ -646,6 +646,97 @@ namespace LaserTag.Host.Logic
 
         [ObservableProperty]
         private ObservableCollection<HitLog> hitLogs = [];
+
+        [ObservableProperty]
+        private ObservableCollection<LogViewModel> filteredLogs = [];
+        #endregion
+
+        #region Game Summary
+        [ObservableProperty]
+        private Player selectedPlayer;
+
+        [ObservableProperty]
+        private List<string> filterCategories = ["Shoot", "Hit other player", "Hitted by other player"];
+
+        [ObservableProperty]
+        private string selectedFilterCategory;
+        partial void OnSelectedPlayerChanged(Player value)
+        {
+            UpdateFilteredLogs();
+        }
+
+        partial void OnSelectedFilterCategoryChanged(string value)
+        {
+            UpdateFilteredLogs();
+        }
+
+        partial void OnShootLogsChanged(ObservableCollection<ShootLog> value)
+        {
+            UpdateFilteredLogs();
+        }
+
+        partial void OnHitLogsChanged(ObservableCollection<HitLog> value)
+        {
+            UpdateFilteredLogs();
+        }
+
+        private void UpdateFilteredLogs()
+        {
+            if (SelectedPlayer == null || string.IsNullOrEmpty(SelectedFilterCategory))
+            {
+                FilteredLogs.Clear();
+                return;
+            }
+
+            FilteredLogs.Clear();
+
+            switch (SelectedFilterCategory)
+            {
+                case "Shoot":
+                    var shootResults = ShootLogs
+                        .Where(log => log.Shooter.Name == SelectedPlayer.Name)
+                        .Select(log => new LogViewModel
+                        {
+                            Time = log.Time,
+                            Round = log.Round,
+                            Description = $"Shot fired",
+                            Type = "Shoot"
+                        });
+                    foreach (var result in shootResults)
+                        FilteredLogs.Add(result);
+                    break;
+
+                case "Hit other player":
+                    var hitResults = HitLogs
+                        .Where(log => log.Shooter.Name == SelectedPlayer.Name)
+                        .Select(log => new LogViewModel
+                        {
+                            Time = log.Time,
+                            Round = log.Round,
+                            Description = $"Hit {log.Target.Name} for {log.Damage} damage",
+                            Type = log.HitType.ToString(),
+                            Damage = log.Damage
+                        });
+                    foreach (var result in hitResults)
+                        FilteredLogs.Add(result);
+                    break;
+
+                case "Hitted by other player":
+                    var hitByResults = HitLogs
+                        .Where(log => log.Target.Name == SelectedPlayer.Name)
+                        .Select(log => new LogViewModel
+                        {
+                            Time = log.Time,
+                            Round = log.Round,
+                            Description = $"Hit by {log.Shooter.Name} for {log.Damage} damage",
+                            Type = log.HitType.ToString(),
+                            Damage = log.Damage
+                        });
+                    foreach (var result in hitByResults)
+                        FilteredLogs.Add(result);
+                    break;
+            }
+        }
         #endregion
 
         #endregion
@@ -654,10 +745,7 @@ namespace LaserTag.Host.Logic
         public void Test()
         {
 
-            var test1 = playerUpgradeCache;
             NotifyAllPlayerInfo("Test notification!!!");
-            OnPropertyChanged(nameof(ShootLogs));
-            OnPropertyChanged(nameof(HitLogs));
 
             var a = 1;
         }

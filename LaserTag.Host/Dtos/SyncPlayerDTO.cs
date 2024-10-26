@@ -18,6 +18,16 @@ namespace LaserTag.Host.Dtos
         public int CurrentSSketch { get; set; }
         public int CurrentArmor { get; set; }
 
+        public int TotalDamage { get; set; }
+        public int TotalHeal { get; set; }
+        public int TotalShots { get; set; }
+        public int TotalHits { get; set; }
+        public int TotalKills { get; set; }
+        public int TotalAssists { get; set; }
+        public int TotalDeath { get; set; }
+        public int Credits { get; set; }
+
+
         public SyncPlayerDTO()
         {
 
@@ -31,6 +41,14 @@ namespace LaserTag.Host.Dtos
             CurrentBullet = player.CurrentBullet;
             CurrentSSketch = player.CurrentSSketchBullet;
             CurrentArmor = player.CurrentArmor;
+            TotalDamage = player.TotalDamage;
+            TotalHeal = player.TotalHeal;
+            TotalShots = player.TotalShots;
+            TotalHits = player.TotalHits;
+            TotalKills = player.TotalKills;
+            TotalAssists = player.TotalAssists;
+            TotalDeath = player.TotalDeaths;
+            Credits = player.Credit;
         }
     }
 }

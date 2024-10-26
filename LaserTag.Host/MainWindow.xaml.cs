@@ -31,14 +31,12 @@ namespace LaserTag.Host
         private void MatchButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(matchPage);
-            //MatchButton.BorderBrush = (SolidColorBrush)FindResource("AccentColorBrush");
             GameProgressButton.BorderBrush = Brushes.Transparent;
         }
 
         private void GameProgressButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(gameProgressPage);
-            //GameProgressButton.BorderBrush = (SolidColorBrush)FindResource("AccentColorBrush");
             MatchButton.BorderBrush = Brushes.Transparent;
         }
         private void StartMatch_Click(object sender, RoutedEventArgs e)
@@ -79,11 +77,6 @@ namespace LaserTag.Host
             {
                 GameManager.Instance.Test();
             }
-        }
-
-        private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
-        {
-
         }
     }
 }
