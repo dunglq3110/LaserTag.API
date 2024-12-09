@@ -62,6 +62,7 @@ builder.Services.AddScoped<IConfigService, ConfigService>();
 builder.Services.AddScoped<ISharedService, SharedService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<IHitLogService, HitLogService>();
+builder.Services.AddScoped<IShootLogService, ShootLogService>();
 builder.Services.AddScoped<IRoundService, RoundService>();
 
 
