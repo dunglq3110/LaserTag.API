@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace LaserTag_API.Core.Models
 {
@@ -16,6 +17,7 @@ namespace LaserTag_API.Core.Models
         public player? source_player { get; set; }
         public player? target_player { get; set; } 
         public round round { get; set; }
+        [JsonIgnore]
         public shared_base? hit_type { get; set; }
         public int value { get; set; }
     }

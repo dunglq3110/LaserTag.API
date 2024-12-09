@@ -13,6 +13,7 @@ namespace LaserTag_API.Core.Interfaces
         IAttributeRepository AttributeRepository { get; }
         IConfigRepository ConfigRepository { get; }
         IHitLogRepository HitLogRepository { get; }
+        IShootLogRepository ShootLogRepository { get; }
         IRoundRepository RoundRepository { get; }
         ISharedBaseRepository SharedBaseRepository { get; }
         ISharedGroupRepository SharedGroupRepository { get; }
